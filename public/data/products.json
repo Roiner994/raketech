@@ -1,0 +1,22 @@
+[
+  {
+    "id": "prod_digital_1",
+    "title": "Gauntlet Play Premium Pass",
+    "description": "Unlimited access to 1000+ top games, early releases, and exclusive DLC.",
+    "price": 14.99,
+    "type": "digital",
+    "platform": "PC / Xbox / Cloud",
+    "imageUrl": "/images/xbox_game_pass.png",
+    "stock": -1
+  },
+  {
+    "id": "prod_physical_1",
+    "title": "PS5 & Headphone Vertical Stand",
+    "description": "Premium 3D printed vertical stand for PS5 with an integrated headphone mount. Sleek black finish.",
+    "price": 35.00,
+    "type": "physical",
+    "material": "PLA+",
+    "imageUrl": "/images/ps5_3d_stand.png",
+    "stock": 15
+  }
+]
