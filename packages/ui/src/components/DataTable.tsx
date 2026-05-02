@@ -13,6 +13,9 @@ export interface TableProduct {
   platform?: string;
   material?: string;
   imageUrl?: string;
+  description?: string;
+  category?: string;
+  featuresHtml?: string;
 }
 
 interface DataTableProps {

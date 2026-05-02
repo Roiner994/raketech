@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Cpu, Layers3, Package, Gamepad2 } from "lucide-react";
 import {
   CartDrawer,
@@ -15,12 +15,14 @@ import {
   StorefrontNavLink,
 } from "@raketech/ui";
 import { useRouter } from "next/navigation";
-import { PHYSICAL_PRODUCTS, NAV_LINKS } from "@/lib/products";
+import { NAV_LINKS } from "@/lib/products";
 import type {
   ProductDetail,
   StorefrontGridProduct,
   StorefrontHeroItem,
 } from "@raketech/ui";
+import { db } from "@raketech/ui";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
@@ -29,8 +31,44 @@ import type {
 export default function PhysicalStorefrontPage() {
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [physicalProducts, setPhysicalProducts] = useState<ProductDetail[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const cart = useCart();
   const toast = useToast();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const q = query(collection(db, "products"), where("type", "==", "physical"));
+        const querySnapshot = await getDocs(q);
+        const products: ProductDetail[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          products.push({
+            id: doc.id,
+            name: data.title,
+            price: data.price,
+            image: data.imageUrl || "/images/placeholder.png",
+            imageAlt: data.title,
+            imageBg: "bg-slate-800",
+            category: data.category || "General",
+            description: data.description || "",
+            features: [], // Handled by featuresHtml now
+            featuresHtml: data.featuresHtml || "",
+            gallery: data.imageUrl ? [data.imageUrl] : [],
+            variants: data.material ? [data.material] : undefined,
+          });
+        });
+        setPhysicalProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const heroItems: StorefrontHeroItem[] = [
     {
@@ -109,15 +147,21 @@ export default function PhysicalStorefrontPage() {
           </section>
 
           <section id="products" className="pt-12">
-            <StorefrontProductGrid
-              title="Accesorios 3D"
-              subtitle="Diseños exclusivos, máxima resistencia para tu setup."
-              viewAllLabel="Ver accesorios"
-              viewAllHref="/catalog"
-              products={PHYSICAL_PRODUCTS}
-              onAddToCart={handleAdd}
-              onViewDetail={(p) => router.push(`/product/${p.id}`)}
-            />
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
+              </div>
+            ) : (
+              <StorefrontProductGrid
+                title="Accesorios 3D"
+                subtitle="Diseños exclusivos, máxima resistencia para tu setup."
+                viewAllLabel="Ver accesorios"
+                viewAllHref="/catalog"
+                products={physicalProducts}
+                onAddToCart={handleAdd}
+                onViewDetail={(p) => router.push(`/product/${p.id}`)}
+              />
+            )}
           </section>
         </div>
 

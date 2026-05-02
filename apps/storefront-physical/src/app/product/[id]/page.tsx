@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import {
@@ -12,33 +12,60 @@ import {
   useCart,
   useToast,
 } from '@raketech/ui';
-import { PHYSICAL_PRODUCTS, NAV_LINKS } from '@/lib/products';
+import { NAV_LINKS } from '@/lib/products';
+import type { ProductDetail } from "@raketech/ui";
+import { db } from "@raketech/ui";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const cart = useCart();
   const toast = useToast();
 
-  const product = PHYSICAL_PRODUCTS.find((p) => p.id === params.id);
+  const id = params.id as string;
 
-  if (!product) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#0B1120] text-white">
-        <h1 className="text-4xl font-black">Producto no encontrado</h1>
-        <button
-          onClick={() => router.push('/')}
-          className="mt-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          Volver a la tienda
-        </button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setProduct({
+            id: docSnap.id,
+            name: data.title,
+            price: data.price,
+            image: data.imageUrl || "/images/placeholder.png",
+            imageAlt: data.title,
+            imageBg: "bg-slate-800",
+            category: data.category || "General",
+            description: data.description || "",
+            features: [], // Handled by featuresHtml
+            featuresHtml: data.featuresHtml || "",
+            gallery: data.imageUrl ? [data.imageUrl] : [],
+            variants: data.material ? [data.material] : undefined,
+          });
+        } else {
+          setProduct(null);
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [id]);
 
   const handleAdd = (qty: number, variant?: string) => {
+    if (!product) return;
+    
     cart.addItem({
       id: product.id,
       title: product.name,
@@ -77,22 +104,41 @@ export default function ProductPage() {
         />
 
         <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
-          {/* Back button */}
-          <button
-            onClick={() => router.push('/')}
-            className="mb-8 flex items-center gap-2 text-sm font-bold text-slate-400 transition-all hover:text-white group"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors">
-              <ArrowLeft className="h-4 w-4" />
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
             </div>
-            Volver al Catálogo
-          </button>
+          ) : !product ? (
+            <div className="flex flex-col items-center justify-center py-24">
+              <h1 className="text-4xl font-black text-white">Producto no encontrado</h1>
+              <button
+                onClick={() => router.push('/')}
+                className="mt-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                Volver a la tienda
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Back button */}
+              <button
+                onClick={() => router.push('/')}
+                className="mb-8 flex items-center gap-2 text-sm font-bold text-slate-400 transition-all hover:text-white group"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors">
+                  <ArrowLeft className="h-4 w-4" />
+                </div>
+                Volver al Catálogo
+              </button>
 
-          <ProductDetailView 
-            product={product} 
-            onAddToCart={(_, qty, variant) => handleAdd(qty, variant)}
-            isPage 
-          />
+              <ProductDetailView 
+                product={product!} 
+                onAddToCart={(_, qty, variant) => handleAdd(qty, variant)}
+                isPage 
+              />
+            </>
+          )}
         </div>
 
         <StorefrontFooter

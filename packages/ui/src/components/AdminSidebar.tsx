@@ -24,9 +24,8 @@ interface AdminSidebarProps {
 }
 
 const defaultLinks: SidebarLink[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: 'dashboard', active: true },
-  { label: 'Juegos Digitales', href: '/dashboard/games', icon: 'games' },
-  { label: 'Impresiones 3D', href: '/dashboard/prints', icon: 'print' },
+  { label: 'Juegos Digitales', href: '/dashboard/digital', icon: 'games' },
+  { label: 'Impresiones 3D', href: '/dashboard/physical', icon: 'print' },
 ];
 
 export function AdminSidebar({

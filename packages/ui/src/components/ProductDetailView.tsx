@@ -23,6 +23,8 @@ export interface ProductDetail extends StorefrontGridProduct {
   variants?: { label: string; value: string; hex?: string }[];
   /** Bullet-point feature list */
   features?: { icon?: 'shield' | 'truck' | 'check'; title: string; body: string }[];
+  /** Rich text features HTML */
+  featuresHtml?: string;
   /** Category breadcrumb label */
   category?: string;
   /** Stock status */
@@ -263,8 +265,15 @@ export function ProductDetailView({ product, onAddToCart, isPage = false }: Prod
           </button>
         </div>
 
-        {/* Features */}
-        {product.features && product.features.length > 0 && (
+        {/* Features / Rich Text */}
+        {product.featuresHtml ? (
+          <div className="mt-2 rounded-2xl border border-white/5 bg-[#1E293B] p-5">
+            <div 
+              className="prose prose-invert max-w-none text-slate-300 prose-headings:text-white prose-a:text-blue-400 prose-strong:text-white"
+              dangerouslySetInnerHTML={{ __html: product.featuresHtml }} 
+            />
+          </div>
+        ) : product.features && product.features.length > 0 ? (
           <div className="mt-2 rounded-2xl border border-white/5 bg-white/[0.02] p-5 space-y-5">
             {product.features.map((f, i) => (
               <div key={i} className="flex items-start gap-4">
@@ -278,7 +287,7 @@ export function ProductDetailView({ product, onAddToCart, isPage = false }: Prod
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

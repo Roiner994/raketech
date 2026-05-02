@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import {
@@ -12,16 +12,62 @@ import {
   useCart,
   useToast,
 } from '@raketech/ui';
-import { DIGITAL_PRODUCTS, NAV_LINKS } from '@/lib/products';
+import { NAV_LINKS } from '@/lib/products';
+import type { ProductDetail } from '@raketech/ui';
+import { db } from '@raketech/ui';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const cart = useCart();
   const toast = useToast();
 
-  const product = DIGITAL_PRODUCTS.find((p) => p.id === params.id);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        const docRef = doc(db, "products", params.id as string);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().type === 'digital') {
+          const data = docSnap.data();
+          setProduct({
+            id: docSnap.id,
+            name: data.title,
+            price: data.price,
+            image: data.imageUrl || "/images/placeholder.png",
+            imageAlt: data.title,
+            imageBg: "bg-slate-800",
+            category: data.category || "General",
+            description: data.description || "",
+            features: [], // Handled by featuresHtml
+            featuresHtml: data.featuresHtml || "",
+            gallery: data.imageUrl ? [data.imageUrl] : [],
+          });
+        } else {
+          setProduct(null);
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (params.id) {
+      fetchProduct();
+    }
+  }, [params.id]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0B1120]">
+        <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (

@@ -57,5 +57,9 @@ export { ToastList } from './components/Toast';
 export { useCart } from './hooks/useCart';
 export type { CartItem, UseCartReturn } from './hooks/useCart';
 
+// ─── Toast Hooks ─────────────────────────────────────────────────────────────
 export { useToast } from './hooks/useToast';
 export type { Toast, ToastVariant, UseToastReturn } from './hooks/useToast';
+
+// ─── Firebase ────────────────────────────────────────────────────────────────
+export { app, db, storage, auth } from './lib/firebase';

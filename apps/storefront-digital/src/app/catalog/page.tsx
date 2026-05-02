@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CartDrawer,
   StorefrontFooter,
@@ -11,14 +11,51 @@ import {
   useToast,
 } from "@raketech/ui";
 import { useRouter } from "next/navigation";
-import { DIGITAL_PRODUCTS, NAV_LINKS } from "@/lib/products";
-import type { StorefrontGridProduct } from "@raketech/ui";
+import { NAV_LINKS } from "@/lib/products";
+import type { StorefrontGridProduct, ProductDetail } from "@raketech/ui";
+import { db } from "@raketech/ui";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export default function DigitalCatalogPage() {
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [digitalProducts, setDigitalProducts] = useState<ProductDetail[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const cart = useCart();
   const toast = useToast();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const q = query(collection(db, "products"), where("type", "==", "digital"));
+        const querySnapshot = await getDocs(q);
+        const products: ProductDetail[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          products.push({
+            id: doc.id,
+            name: data.title,
+            price: data.price,
+            image: data.imageUrl || "/images/placeholder.png",
+            imageAlt: data.title,
+            imageBg: "bg-slate-800",
+            category: data.category || "General",
+            description: data.description || "",
+            features: [], // Handled by featuresHtml now
+            featuresHtml: data.featuresHtml || "",
+            gallery: data.imageUrl ? [data.imageUrl] : [],
+          });
+        });
+        setDigitalProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const handleAdd = (product: StorefrontGridProduct, quantity: number = 1) => {
     cart.addItem({
@@ -58,13 +95,19 @@ export default function DigitalCatalogPage() {
         />
 
         <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
-          <StorefrontProductGrid
-            title="Todas las Suscripciones"
-            subtitle="Explora nuestro catálogo completo de suscripciones digitales."
-            products={DIGITAL_PRODUCTS}
-            onAddToCart={handleAdd}
-            onViewDetail={(p) => router.push(`/product/${p.id}`)}
-          />
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
+            </div>
+          ) : (
+            <StorefrontProductGrid
+              title="Todas las Suscripciones"
+              subtitle="Explora nuestro catálogo completo de suscripciones digitales."
+              products={digitalProducts}
+              onAddToCart={handleAdd}
+              onViewDetail={(p) => router.push(`/product/${p.id}`)}
+            />
+          )}
         </div>
 
         <StorefrontFooter
