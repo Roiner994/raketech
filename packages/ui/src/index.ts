@@ -26,6 +26,12 @@ export { StorefrontHeroGrid } from './components/StorefrontHeroGrid';
 export type { StorefrontHeroItem } from './components/StorefrontHeroGrid';
 export { StorefrontShowcaseCard } from './components/StorefrontShowcaseCard';
 export type { StorefrontShowcaseCardProps } from './components/StorefrontShowcaseCard';
+export { StorefrontProductGrid } from './components/StorefrontProductGrid';
+export type { StorefrontProductGridProps, StorefrontGridProduct } from './components/StorefrontProductGrid';
+export { ProductDetailModal } from './components/ProductDetailModal';
+export type { ProductDetailModalProps, ProductDetail } from './components/ProductDetailModal';
+export { ProductDetailView } from './components/ProductDetailView';
+export type { ProductDetailViewProps } from './components/ProductDetailView';
 export { StorefrontFooter } from './components/StorefrontFooter';
 export type { StorefrontFooterColumn } from './components/StorefrontFooter';
 

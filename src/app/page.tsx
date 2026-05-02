@@ -141,109 +141,153 @@ export default function KitchenSink() {
           </div>
 
           {/* Digital Subscriptions Section */}
-          <section className="space-y-6 pt-6">
-            <div className="flex items-end justify-between">
+          <section className="space-y-5 pt-6">
+            <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-1">Suscripciones Digitales</h2>
+                <h2 className="text-xl font-bold text-white mb-0.5">Suscripciones Digitales</h2>
                 <p className="text-xs text-slate-400">Códigos originales con entrega instantánea.</p>
               </div>
-              <a href="#" className="text-xs font-semibold text-[#0066FF] hover:text-blue-400 transition-colors flex items-center gap-1">
-                Ver todas las suscripciones <ArrowRight className="w-3 h-3" />
+              <a href="#" className="text-xs font-semibold text-slate-300 hover:text-white transition-colors flex items-center gap-1">
+                Ver suscripciones <ArrowRight className="w-3 h-3" />
               </a>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
               {/* Xbox Card */}
-              <div className="bg-[#1A451A] rounded-xl p-6 relative overflow-hidden flex flex-col group border border-transparent hover:border-[#00E676]/30 transition-all min-h-[280px]">
-                <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4">
-                  <Gamepad2 className="w-48 h-48 text-white" />
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-[#00E676]/40 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#1A451A] flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-20 bg-[url('/images/xbox_game_pass.png')] bg-cover bg-center" />
+                  <Gamepad2 className="w-12 h-12 text-[#00E676] relative z-10 drop-shadow-lg" />
                 </div>
-                
-                <div className="relative z-10 flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-2 text-white font-bold text-xs tracking-wider">
-                    <Gamepad2 className="w-4 h-4" /> XBOX
-                  </div>
-                  <div className="px-3 py-1 bg-black/40 rounded-full text-[10px] font-bold text-white border border-white/10 backdrop-blur-sm">
-                    1 MES
-                  </div>
-                </div>
-
-                <div className="relative z-10 mb-8">
-                  <h4 className="text-3xl font-bold text-white leading-tight">GAME PASS</h4>
-                  <h5 className="text-xl text-slate-200 font-medium">ULTIMATE</h5>
-                </div>
-
-                <div className="relative z-10 mt-auto">
-                  <p className="text-[10px] text-slate-300 mb-0.5">Precio Regular</p>
-                  <div className="flex items-end gap-1 mb-4">
-                    <span className="text-xs text-slate-300 mb-1">Desde</span>
-                    <span className="text-3xl font-bold text-white leading-none">$3.99</span>
-                  </div>
-                  <button className="w-full py-3 bg-white hover:bg-slate-200 text-[#1A451A] font-bold text-xs rounded flex items-center justify-center gap-2 transition-colors">
-                    <ShoppingCart className="w-4 h-4" /> Agregar al Carrito
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">Xbox Game Pass Ultimate</p>
+                  <p className="text-[#00E676] text-sm font-bold">$3.99</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-[#00E676] hover:text-[#0A101D] text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
                   </button>
                 </div>
               </div>
 
-              {/* PlayStation Card */}
-              <div className="bg-[#0A2E7A] rounded-xl p-6 relative overflow-hidden flex flex-col group border border-transparent hover:border-[#0066FF]/30 transition-all min-h-[280px]">
-                <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4">
-                  <Gamepad2 className="w-48 h-48 text-white" />
+              {/* PS Plus Card */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-[#0066FF]/40 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#0A2E7A] flex items-center justify-center relative overflow-hidden">
+                  <Gamepad2 className="w-12 h-12 text-[#FFC107] drop-shadow-lg" />
                 </div>
-                
-                <div className="relative z-10 flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-2 text-white font-bold text-xs tracking-wider">
-                    <Gamepad2 className="w-4 h-4" /> PLAYSTATION
-                  </div>
-                  <div className="px-3 py-1 bg-black/40 rounded-full text-[10px] font-bold text-white border border-white/10 backdrop-blur-sm">
-                    3 MESES
-                  </div>
-                </div>
-
-                <div className="relative z-10 mb-8">
-                  <h4 className="text-3xl font-bold text-white leading-tight">PS PLUS</h4>
-                  <h5 className="text-xl text-[#FFC107] font-medium">DELUXE</h5>
-                </div>
-
-                <div className="relative z-10 mt-auto">
-                  <p className="text-[10px] text-slate-300 mb-0.5">Precio Final</p>
-                  <div className="flex items-end gap-1 mb-4">
-                    <span className="text-3xl font-bold text-white leading-none">$15.50</span>
-                  </div>
-                  <button className="w-full py-3 bg-[#FFC107] hover:bg-[#FFB300] text-[#0A2E7A] font-bold text-xs rounded flex items-center justify-center gap-2 transition-colors">
-                    <ShoppingCart className="w-4 h-4" /> Agregar al Carrito
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">PS Plus Deluxe 3 Meses</p>
+                  <p className="text-[#FFC107] text-sm font-bold">$15.50</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-[#FFC107] hover:text-[#0A2E7A] text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
                   </button>
                 </div>
               </div>
 
-              {/* Apple Card */}
-              <div className="bg-[#2A2422] rounded-xl p-6 relative overflow-hidden flex flex-col group border border-transparent hover:border-slate-500/30 transition-all min-h-[280px]">
-                <div className="absolute right-0 top-0 opacity-5 transform translate-x-1/4 -translate-y-1/4">
-                  <Cloud className="w-48 h-48 text-white" />
+              {/* iCloud Card */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-slate-500/40 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#1C1C1E] flex items-center justify-center relative overflow-hidden">
+                  <Cloud className="w-12 h-12 text-slate-300 drop-shadow-lg" />
                 </div>
-                
-                <div className="relative z-10 flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-2 text-white font-bold text-xs tracking-wider">
-                    <Cloud className="w-4 h-4" /> APPLE
-                  </div>
-                  <div className="px-3 py-1 bg-black/40 rounded-full text-[10px] font-bold text-white border border-white/10 backdrop-blur-sm">
-                    1 MES
-                  </div>
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">iCloud+ 200 GB 1 Mes</p>
+                  <p className="text-slate-200 text-sm font-bold">$2.99</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-white hover:text-black text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
+                  </button>
                 </div>
+              </div>
 
-                <div className="relative z-10 mb-8">
-                  <h4 className="text-3xl font-bold text-white leading-tight">iCLOUD+</h4>
-                  <h5 className="text-xl text-[#0066FF] font-medium">200 GB</h5>
-                </div>
-
-                <div className="relative z-10 mt-auto">
-                  <p className="text-[10px] text-slate-300 mb-0.5">Precio Final</p>
-                  <div className="flex items-end gap-1 mb-4">
-                    <span className="text-3xl font-bold text-white leading-none">$2.99</span>
+              {/* Spotify Card */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-[#1DB954]/40 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#0D2A1A] flex items-center justify-center relative overflow-hidden">
+                  <div className="w-12 h-12 rounded-full bg-[#1DB954] flex items-center justify-center">
+                    <svg className="w-7 h-7 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.241-3.021-1.858-6.832-2.278-11.322-1.237-.431.1-.871-.17-.971-.601-.1-.43.17-.871.601-.971 4.911-1.121 9.122-.641 12.502 1.431.38.25.49.731.241 1.101l.05.036zm1.47-3.28c-.301.461-.921.601-1.381.3-3.451-2.121-8.712-2.741-12.782-1.5-.51.16-1.051-.13-1.211-.641-.16-.51.13-1.051.641-1.211 4.661-1.411 10.453-.721 14.433 1.71.461.281.601.921.3 1.342zm.13-3.41c-4.141-2.461-10.982-2.691-14.943-1.49-.601.19-1.241-.14-1.431-.741-.19-.601.141-1.241.741-1.431 4.543-1.381 12.093-1.111 16.863 1.721.541.321.721 1.021.4 1.561-.321.541-1.021.721-1.561.4l-.069-.02z"/></svg>
                   </div>
-                  <button className="w-full py-3 bg-white hover:bg-slate-200 text-black font-bold text-xs rounded flex items-center justify-center gap-2 transition-colors">
-                    <ShoppingCart className="w-4 h-4" /> Agregar al Carrito
+                </div>
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">Spotify Premium 1 Mes</p>
+                  <p className="text-[#1DB954] text-sm font-bold">$4.99</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-[#1DB954] hover:text-black text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* Physical / 3D Accessories Section */}
+          <section className="space-y-5 pt-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-0.5">Accesorios 3D</h2>
+                <p className="text-xs text-slate-400">Diseños exclusivos, máxima resistencia para tu setup.</p>
+              </div>
+              <a href="#" className="text-xs font-semibold text-slate-300 hover:text-white transition-colors flex items-center gap-1">
+                Ver accesorios <ArrowRight className="w-3 h-3" />
+              </a>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+              {/* PS5 Wall Mount */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-[#0066FF]/50 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#111827] flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 bg-[url('/images/ps5_3d_stand.png')] bg-cover bg-center group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">Base de Pared para PS5</p>
+                  <p className="text-slate-200 text-sm font-bold">$4.99</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-[#0066FF] hover:text-white text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
+                  </button>
+                </div>
+              </div>
+
+              {/* Xbox Controller Stand */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-[#0066FF]/50 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#111827] flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Gamepad2 className="w-16 h-16 text-slate-600" />
+                  </div>
+                </div>
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">Soporte de Controles Xbox</p>
+                  <p className="text-slate-200 text-sm font-bold">$4.99</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-[#0066FF] hover:text-white text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
+                  </button>
+                </div>
+              </div>
+
+              {/* Headphone Stand — active/highlighted */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border-2 border-[#0066FF] transition-all group flex flex-col shadow-lg shadow-[#0066FF]/20">
+                <div className="aspect-square bg-[#111827] flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" /></svg>
+                  </div>
+                </div>
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">Soporte para Audífonos</p>
+                  <p className="text-slate-200 text-sm font-bold">$6.50</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#00E676] hover:bg-[#00C853] text-[#0A101D] text-xs font-bold rounded-lg border-transparent transition-all flex items-center justify-center gap-1 shadow-lg shadow-[#00E676]/20">
+                    + Agregar
+                  </button>
+                </div>
+              </div>
+
+              {/* Nintendo Switch Base */}
+              <div className="bg-[#0F172A] rounded-xl overflow-hidden border border-slate-800 hover:border-[#0066FF]/50 transition-all group flex flex-col">
+                <div className="aspect-square bg-[#111827] flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg className="w-14 h-14 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="3" strokeWidth={1.5}/><path strokeLinecap="round" strokeWidth={1.5} d="M8 7h1m7 10h1M12 3v18"/></svg>
+                  </div>
+                </div>
+                <div className="p-3 flex flex-col gap-2 flex-1">
+                  <p className="text-white text-xs font-semibold leading-tight">Base Nintendo Switch</p>
+                  <p className="text-slate-200 text-sm font-bold">$5.99</p>
+                  <button className="mt-auto w-full py-1.5 bg-[#1E293B] hover:bg-[#0066FF] hover:text-white text-slate-300 text-xs font-bold rounded-lg border border-slate-700 hover:border-transparent transition-all flex items-center justify-center gap-1">
+                    + Agregar
                   </button>
                 </div>
               </div>

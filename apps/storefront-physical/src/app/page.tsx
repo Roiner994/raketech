@@ -1,102 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { Cpu, Layers3, Package } from "lucide-react";
+import { Cpu, Layers3, Package, Gamepad2 } from "lucide-react";
 import {
   CartDrawer,
+  ProductDetailModal,
   StorefrontFooter,
   StorefrontHeader,
   StorefrontHeroGrid,
-  StorefrontShowcaseCard,
+  StorefrontProductGrid,
   ToastList,
   useCart,
   useToast,
+  StorefrontNavLink,
 } from "@raketech/ui";
-import type { StorefrontHeroItem, StorefrontNavLink } from "@raketech/ui";
+import { useRouter } from "next/navigation";
+import { PHYSICAL_PRODUCTS, NAV_LINKS } from "@/lib/products";
+import type {
+  ProductDetail,
+  StorefrontGridProduct,
+  StorefrontHeroItem,
+} from "@raketech/ui";
 
-type PhysicalProduct = {
-  id: string;
-  brand: string;
-  title: string;
-  accent: string;
-  priceLabel: string;
-  price: number;
-  badge: string;
-  image: string;
-  imageAlt: string;
-  material: string;
-  tone: "green" | "blue" | "charcoal";
-  actionTheme: "light" | "gold";
-  icon: "layers" | "cpu" | "package";
-};
+// ─── Page ────────────────────────────────────────────────────────────────────
 
-const NAV_LINKS: StorefrontNavLink[] = [
-  { label: "Productos", href: "#products" },
-  { label: "Materiales", href: "#products" },
-  { label: "Soporte", href: "#footer" },
-];
-
-const PRODUCTS: PhysicalProduct[] = [
-  {
-    id: "base-ps5-v",
-    brand: "CONSOLA",
-    title: "BASE PS5",
-    accent: "VERTICAL",
-    priceLabel: "Precio Final",
-    price: 25.0,
-    badge: "PLA+",
-    image: "/images/ps5_3d_stand.png",
-    imageAlt: "Base vertical para PS5",
-    material: "PLA+",
-    tone: "blue",
-    actionTheme: "gold",
-    icon: "cpu",
-  },
-  {
-    id: "soporte-auricular",
-    brand: "SETUP",
-    title: "SOPORTE",
-    accent: "AURICULAR",
-    priceLabel: "Precio Final",
-    price: 15.0,
-    badge: "PETG",
-    image: "/images/xbox_game_pass.png",
-    imageAlt: "Soporte para auriculares gamer",
-    material: "PETG",
-    tone: "green",
-    actionTheme: "light",
-    icon: "layers",
-  },
-  {
-    id: "dock-switch",
-    brand: "NINTENDO",
-    title: "DOCK",
-    accent: "SWITCH",
-    priceLabel: "Precio Final",
-    price: 35.0,
-    badge: "RESINA",
-    image: "/images/apple_icloud.png",
-    imageAlt: "Dock personalizado para Nintendo Switch",
-    material: "Resina",
-    tone: "charcoal",
-    actionTheme: "light",
-    icon: "package",
-  },
-];
-
-function iconForProduct(icon: PhysicalProduct["icon"]) {
-  if (icon === "layers") {
-    return <Layers3 className="h-4 w-4" />;
-  }
-
-  if (icon === "cpu") {
-    return <Cpu className="h-4 w-4" />;
-  }
-
-  return <Package className="h-4 w-4" />;
-}
+// ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function PhysicalStorefrontPage() {
+  const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCart();
   const toast = useToast();
@@ -104,12 +35,12 @@ export default function PhysicalStorefrontPage() {
   const heroItems: StorefrontHeroItem[] = [
     {
       id: "hero-physical",
-      badge: "Fabricacion",
-      title: "Accesorios y Bases en Impresion 3D",
-      accent: "Impresion 3D",
+      badge: "Fabricación",
+      title: "Accesorios y Bases en Impresión 3D",
+      accent: "Impresión 3D",
       description:
         "Piezas personalizadas, materiales premium y acabados limpios para consolas, mandos y escritorios gamer.",
-      ctaLabel: "Ver Coleccion",
+      ctaLabel: "Ver Colección",
       image: "/images/ps5_3d_stand.png",
       imageAlt: "Accesorio gamer impreso en 3D",
       tone: "blue",
@@ -123,7 +54,7 @@ export default function PhysicalStorefrontPage() {
       title: "PLA+, PETG y Resina",
       accent: "para cada uso",
       description:
-        "Seleccionamos el material ideal segun resistencia, textura y el look que quieres para tu setup.",
+        "Seleccionamos el material ideal según resistencia, textura y el look que quieres para tu setup.",
       ctaLabel: "Hablar por WhatsApp",
       image: "/images/apple_icloud.png",
       imageAlt: "Textura y materiales premium",
@@ -133,16 +64,19 @@ export default function PhysicalStorefrontPage() {
     },
   ];
 
-  const handleAddToCart = (product: PhysicalProduct) => {
+  const handleAdd = (product: StorefrontGridProduct, quantity: number = 1, variant?: string) => {
     cart.addItem({
       id: product.id,
-      title: `${product.title} ${product.accent}`,
+      title: product.name,
       price: product.price,
       type: "physical",
+      image: product.image,
+      quantity,
+      variant,
     });
 
     toast.showToast("Producto agregado al carrito", {
-      description: `${product.title} ${product.accent}`,
+      description: `${quantity}x ${product.name}${variant ? ` (${variant})` : ''}`,
       variant: "success",
     });
   };
@@ -160,10 +94,8 @@ export default function PhysicalStorefrontPage() {
         storeName="Raketech 3D"
       />
 
-      <main
-        id="top"
-        className="min-h-screen"
-      >
+
+      <main id="top" className="min-h-screen">
         <StorefrontHeader
           links={NAV_LINKS}
           cartCount={cart.itemCount}
@@ -177,43 +109,15 @@ export default function PhysicalStorefrontPage() {
           </section>
 
           <section id="products" className="pt-12">
-            <div className="mb-7 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
-                  Catalogo Impreso en 3D
-                </h1>
-                <p className="text-sm text-[var(--text-muted)] sm:text-base">
-                  Piezas resistentes y fabricadas a pedido para setups gamers.
-                </p>
-              </div>
-
-              <a
-                href="#footer"
-                className="inline-flex items-center gap-2 text-sm font-bold text-[var(--accent-primary)] transition hover:text-[var(--accent-primary-hover)] sm:text-base"
-              >
-                Ver materiales y soporte
-              </a>
-            </div>
-
-            <div className="grid gap-5 xl:grid-cols-3">
-              {PRODUCTS.map((product) => (
-                <StorefrontShowcaseCard
-                  key={product.id}
-                  brand={product.brand}
-                  title={product.title}
-                  accent={product.accent}
-                  priceLabel={product.priceLabel}
-                  price={product.price}
-                  badge={product.badge}
-                  image={product.image}
-                  imageAlt={product.imageAlt}
-                  tone={product.tone}
-                  actionTheme={product.actionTheme}
-                  icon={iconForProduct(product.icon)}
-                  onAction={() => handleAddToCart(product)}
-                />
-              ))}
-            </div>
+            <StorefrontProductGrid
+              title="Accesorios 3D"
+              subtitle="Diseños exclusivos, máxima resistencia para tu setup."
+              viewAllLabel="Ver accesorios"
+              viewAllHref="/catalog"
+              products={PHYSICAL_PRODUCTS}
+              onAddToCart={handleAdd}
+              onViewDetail={(p) => router.push(`/product/${p.id}`)}
+            />
           </section>
         </div>
 
@@ -227,7 +131,7 @@ export default function PhysicalStorefrontPage() {
               links: [
                 { label: "Bases para consola", href: "#" },
                 { label: "Soportes de escritorio", href: "#" },
-                { label: "Disenos personalizados", href: "#" },
+                { label: "Diseños personalizados", href: "#" },
               ],
             },
             {

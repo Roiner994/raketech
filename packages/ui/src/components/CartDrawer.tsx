@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { X, ShoppingCart, ShoppingBag, Gamepad2, Printer, Trash2, MessageCircle, Plus, Minus } from 'lucide-react';
 import type { CartItem } from '../hooks/useCart';
 
@@ -8,8 +9,8 @@ interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   items: CartItem[];
-  onRemove: (id: string) => void;
-  onUpdateQuantity: (id: string, quantity: number) => void;
+  onRemove: (id: string, variant?: string) => void;
+  onUpdateQuantity: (id: string, quantity: number, variant?: string) => void;
   total: number;
   whatsappNumber?: string;
   storeName?: string;
@@ -17,7 +18,7 @@ interface CartDrawerProps {
 
 function buildWhatsAppMessage(items: CartItem[], total: number, storeName = 'Raketech'): string {
   const lines = items.map(
-    (i) => `• ${i.title} x${i.quantity} — $${(i.price * i.quantity).toFixed(2)}`
+    (i) => `• ${i.title}${i.variant ? ` (${i.variant})` : ''} x${i.quantity} — $${(i.price * i.quantity).toFixed(2)}`
   );
   const text = [
     `¡Hola ${storeName}! Me gustaría realizar el siguiente pedido:`,
@@ -92,12 +93,20 @@ export function CartDrawer({
           ) : (
             items.map((item) => (
               <div
-                key={item.id}
+                key={`${item.id}-${item.variant || 'default'}`}
                 className="flex items-start gap-3 bg-[#0B1120] p-4 rounded-xl border border-slate-800"
               >
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center shrink-0">
-                  {item.type === 'digital' ? (
+                {/* Image/Icon */}
+                <div className="relative w-14 h-14 rounded-lg bg-slate-800 flex items-center justify-center shrink-0 overflow-hidden border border-white/5">
+                  {item.image ? (
+                    <Image 
+                      src={item.image} 
+                      alt={item.title} 
+                      fill 
+                      sizes="56px"
+                      className="object-cover"
+                    />
+                  ) : item.type === 'digital' ? (
                     <Gamepad2 className="w-6 h-6 text-[#3B82F6]" />
                   ) : (
                     <Printer className="w-6 h-6 text-slate-400" />
@@ -107,20 +116,24 @@ export function CartDrawer({
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-white leading-snug line-clamp-1">{item.title}</p>
-                  {item.platform && <p className="text-xs text-slate-500 mt-0.5">{item.platform}</p>}
+                  {item.variant && (
+                    <span className="inline-block mt-1 px-1.5 py-0.5 bg-white/5 text-slate-400 text-[10px] uppercase font-bold rounded">
+                      {item.variant}
+                    </span>
+                  )}
                   <p className="text-sm font-bold text-white mt-2">${(item.price * item.quantity).toFixed(2)}</p>
 
                   {/* Quantity controls */}
                   <div className="flex items-center gap-2 mt-2">
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => onUpdateQuantity(item.id, item.quantity - 1, item.variant)}
                       className="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition-colors"
                     >
                       <Minus className="w-3 h-3" />
                     </button>
                     <span className="text-xs font-semibold text-white w-4 text-center">{item.quantity}</span>
                     <button
-                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1, item.variant)}
                       className="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition-colors"
                     >
                       <Plus className="w-3 h-3" />
@@ -130,7 +143,7 @@ export function CartDrawer({
 
                 {/* Remove */}
                 <button
-                  onClick={() => onRemove(item.id)}
+                  onClick={() => onRemove(item.id, item.variant)}
                   aria-label={`Eliminar ${item.title}`}
                   className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors shrink-0"
                 >

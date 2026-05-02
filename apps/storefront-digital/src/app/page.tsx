@@ -1,102 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { Cloud, Gamepad2, Monitor } from "lucide-react";
+import { Cloud, Gamepad2 } from "lucide-react";
 import {
   CartDrawer,
+  ProductDetailModal,
   StorefrontFooter,
   StorefrontHeader,
   StorefrontHeroGrid,
-  StorefrontShowcaseCard,
+  StorefrontProductGrid,
   ToastList,
   useCart,
   useToast,
+  StorefrontNavLink,
 } from "@raketech/ui";
-import type { StorefrontHeroItem, StorefrontNavLink } from "@raketech/ui";
+import { useRouter } from "next/navigation";
+import { DIGITAL_PRODUCTS, NAV_LINKS } from "@/lib/products";
+import type {
+  ProductDetail,
+  StorefrontGridProduct,
+  StorefrontHeroItem,
+} from "@raketech/ui";
 
-type ShowcaseProduct = {
-  id: string;
-  brand: string;
-  title: string;
-  accent: string;
-  priceLabel: string;
-  price: number;
-  badge: string;
-  image: string;
-  imageAlt: string;
-  platform: string;
-  tone: "green" | "blue" | "charcoal";
-  actionTheme: "light" | "gold";
-  icon: "gamepad" | "monitor" | "cloud";
-};
+// ─── Page ────────────────────────────────────────────────────────────────────
 
-const NAV_LINKS: StorefrontNavLink[] = [
-  { label: "Suscripciones Digitales", href: "#subscriptions" },
-  { label: "Impresion 3D", href: "#featured" },
-  { label: "Nosotros", href: "#footer" },
-];
-
-const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
-  {
-    id: "xbox-1m",
-    brand: "XBOX",
-    title: "GAME PASS",
-    accent: "ULTIMATE",
-    priceLabel: "Precio Regular",
-    price: 3.99,
-    badge: "1 MES",
-    image: "/images/xbox_game_pass.png",
-    imageAlt: "Tarjeta Xbox Game Pass",
-    platform: "Xbox",
-    tone: "green",
-    actionTheme: "light",
-    icon: "gamepad",
-  },
-  {
-    id: "psplus-3m",
-    brand: "PLAYSTATION",
-    title: "PS PLUS",
-    accent: "DELUXE",
-    priceLabel: "Precio Final",
-    price: 15.5,
-    badge: "3 MESES",
-    image: "/images/ps5_3d_stand.png",
-    imageAlt: "Tarjeta PlayStation Plus",
-    platform: "PlayStation",
-    tone: "blue",
-    actionTheme: "gold",
-    icon: "monitor",
-  },
-  {
-    id: "icloud-1m",
-    brand: "APPLE",
-    title: "iCLOUD+",
-    accent: "200 GB",
-    priceLabel: "Precio Final",
-    price: 2.99,
-    badge: "1 MES",
-    image: "/images/apple_icloud.png",
-    imageAlt: "Tarjeta Apple iCloud Plus",
-    platform: "Apple",
-    tone: "charcoal",
-    actionTheme: "light",
-    icon: "cloud",
-  },
-];
-
-function iconForProduct(icon: ShowcaseProduct["icon"]) {
-  if (icon === "gamepad") {
-    return <Gamepad2 className="h-4 w-4" />;
-  }
-
-  if (icon === "monitor") {
-    return <Monitor className="h-4 w-4" />;
-  }
-
-  return <Cloud className="h-4 w-4" />;
-}
+// ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function DigitalStorefrontPage() {
+  const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCart();
   const toast = useToast();
@@ -108,10 +39,10 @@ export default function DigitalStorefrontPage() {
       title: "Suscripciones al Mejor Precio",
       accent: "Mejor Precio",
       description:
-        "Accede a miles de juegos y beneficios exclusivos con Xbox Game Pass, PS Plus y mas. Entrega inmediata.",
-      ctaLabel: "Ver Catalogo",
+        "Accede a miles de juegos y beneficios exclusivos con Xbox Game Pass, PS Plus y más. Entrega inmediata.",
+      ctaLabel: "Ver Catálogo",
       image: "/images/xbox_game_pass.png",
-      imageAlt: "Control de videojuegos con iluminacion verde",
+      imageAlt: "Control de videojuegos con iluminación verde",
       tone: "green",
       featured: true,
       onCtaClick: () =>
@@ -122,13 +53,13 @@ export default function DigitalStorefrontPage() {
     {
       id: "hero-print",
       badge: "Nuevo",
-      title: "Bases y Soportes en Impresion 3D",
-      accent: "Impresion 3D",
+      title: "Bases y Soportes en Impresión 3D",
+      accent: "Impresión 3D",
       description:
         "Eleva tu setup al siguiente nivel con soportes personalizados y de alta resistencia para tus consolas y controles.",
       ctaLabel: "Explorar Accesorios",
       image: "/images/ps5_3d_stand.png",
-      imageAlt: "Soporte de impresion 3D para consola",
+      imageAlt: "Soporte de impresión 3D para consola",
       tone: "blue",
       onCtaClick: () =>
         document
@@ -137,19 +68,18 @@ export default function DigitalStorefrontPage() {
     },
   ];
 
-  const handleAddToCart = (product: ShowcaseProduct) => {
+  const handleAdd = (product: StorefrontGridProduct, quantity: number = 1) => {
     cart.addItem({
       id: product.id,
-      title: `${product.title} ${product.accent}`,
+      title: product.name,
       price: product.price,
       type: "digital",
-      platform: product.platform,
-      duration: product.badge,
       image: product.image,
+      quantity,
     });
 
     toast.showToast("Producto agregado al carrito", {
-      description: `${product.title} ${product.accent}`,
+      description: `${quantity}x ${product.name}`,
       variant: "success",
     });
   };
@@ -167,10 +97,8 @@ export default function DigitalStorefrontPage() {
         storeName="Raketech Digital"
       />
 
-      <main
-        id="top"
-        className="min-h-screen"
-      >
+
+      <main id="top" className="min-h-screen">
         <StorefrontHeader
           links={NAV_LINKS}
           cartCount={cart.itemCount}
@@ -184,53 +112,25 @@ export default function DigitalStorefrontPage() {
           </section>
 
           <section id="subscriptions" className="pt-12">
-            <div className="mb-7 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
-                  Suscripciones Digitales
-                </h1>
-                <p className="text-sm text-[var(--text-muted)] sm:text-base">
-                  Codigos originales con entrega instantanea.
-                </p>
-              </div>
-
-              <a
-                href="#top"
-                className="inline-flex items-center gap-2 text-sm font-bold text-[var(--accent-primary)] transition hover:text-[var(--accent-primary-hover)] sm:text-base"
-              >
-                Ver todas las suscripciones
-              </a>
-            </div>
-
-            <div className="grid gap-5 xl:grid-cols-3">
-              {SHOWCASE_PRODUCTS.map((product) => (
-                <StorefrontShowcaseCard
-                  key={product.id}
-                  brand={product.brand}
-                  title={product.title}
-                  accent={product.accent}
-                  priceLabel={product.priceLabel}
-                  price={product.price}
-                  badge={product.badge}
-                  image={product.image}
-                  imageAlt={product.imageAlt}
-                  tone={product.tone}
-                  actionTheme={product.actionTheme}
-                  icon={iconForProduct(product.icon)}
-                  onAction={() => handleAddToCart(product)}
-                />
-              ))}
-            </div>
+            <StorefrontProductGrid
+              title="Suscripciones Digitales"
+              subtitle="Códigos originales con entrega instantánea."
+              viewAllLabel="Ver todas las suscripciones"
+              viewAllHref="/catalog"
+              products={DIGITAL_PRODUCTS}
+              onAddToCart={handleAdd}
+              onViewDetail={(p) => router.push(`/product/${p.id}`)}
+            />
           </section>
         </div>
 
         <StorefrontFooter
           storeName="Raketech Digital"
-          description="Suscripciones digitales premium, codigos originales y accesorios para elevar tu setup con entregas rapidas y soporte cercano."
+          description="Suscripciones digitales premium, códigos originales y accesorios para elevar tu setup con entregas rápidas y soporte cercano."
           whatsappNumber="1234567890"
           columns={[
             {
-              title: "Catalogo",
+              title: "Catálogo",
               links: [
                 { label: "Xbox Game Pass", href: "#" },
                 { label: "PlayStation Plus", href: "#" },
@@ -241,7 +141,7 @@ export default function DigitalStorefrontPage() {
               title: "Soporte",
               links: [
                 { label: "Preguntas Frecuentes", href: "#" },
-                { label: "Como funciona", href: "#" },
+                { label: "Cómo funciona", href: "#" },
                 { label: "Contacto", href: "#" },
               ],
             },
