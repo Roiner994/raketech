@@ -1,6 +1,7 @@
 import type { ProductDetail, StorefrontNavLink } from "@raketech/ui";
 
 export const NAV_LINKS: StorefrontNavLink[] = [
+  { label: "Destacados", href: "/#featured" },
   { label: "Productos", href: "/#products" },
   { label: "Materiales", href: "/#products" },
   { label: "Soporte", href: "/#footer" },
@@ -111,6 +112,7 @@ export function mapPhysicalFirestoreProduct(
     image: imageUrl || "/images/placeholder.png",
     imageAlt: typeof data.title === "string" ? data.title : "Producto",
     imageBg: "bg-slate-800",
+    featured: data.featured === true,
     category: typeof data.category === "string" && data.category.length > 0 ? data.category : "General",
     description: typeof data.description === "string" ? data.description : "",
     features: [],

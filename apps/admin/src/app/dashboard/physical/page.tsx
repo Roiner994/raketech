@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { StatsCard, DataTable, ToastList, useToast, db } from "@raketech/ui";
 import type { TableProduct } from "@raketech/ui";
 import { Package, Users, Plus } from "lucide-react";
-import { collection, getDocs, query, where, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { consumeFlashToast } from "@/lib/flashToast";
 
@@ -35,6 +35,7 @@ export default function PhysicalDashboardPage() {
           material: data.material,
           stock: data.stock || 0,
           featuresHtml: data.featuresHtml,
+          featured: data.featured === true,
         });
       });
       setProducts(loadedProducts);
@@ -80,6 +81,18 @@ export default function PhysicalDashboardPage() {
     } catch (error) {
       console.error("Error deleting product:", error);
       showToast("Error al eliminar el producto", { variant: "error" });
+    }
+  };
+
+  const handleToggleFeatured = async (product: TableProduct) => {
+    try {
+      await updateDoc(doc(db, "products", product.id), {
+        featured: !product.featured,
+      });
+      void fetchProducts();
+    } catch (error) {
+      console.error("Error updating featured state:", error);
+      showToast("Error actualizando destacado", { variant: "error" });
     }
   };
 
@@ -133,6 +146,7 @@ export default function PhysicalDashboardPage() {
           products={products}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onToggleFeatured={handleToggleFeatured}
         />
       )}
 

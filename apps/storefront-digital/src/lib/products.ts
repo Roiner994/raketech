@@ -92,6 +92,7 @@ export function mapDigitalFirestoreProduct(
     image: imageUrl || "/images/placeholder.png",
     imageAlt: typeof data.title === "string" ? data.title : "Producto",
     imageBg: "bg-slate-800",
+    featured: data.featured === true,
     category: typeof data.category === "string" && data.category.length > 0 ? data.category : "General",
     description: typeof data.description === "string" ? data.description : "",
     features: [],

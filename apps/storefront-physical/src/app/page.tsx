@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import {
   CartDrawer,
   StorefrontFooter,
+  StorefrontFeaturedCarousel,
   StorefrontHeader,
-  StorefrontHeroGrid,
   StorefrontProductGrid,
   ToastList,
   useCart,
@@ -16,7 +16,6 @@ import { NAV_LINKS, mapPhysicalFirestoreProduct } from "@/lib/products";
 import type {
   ProductDetail,
   StorefrontGridProduct,
-  StorefrontHeroItem,
 } from "@raketech/ui";
 import { db } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -52,38 +51,8 @@ export default function PhysicalStorefrontPage() {
     };
     fetchProducts();
   }, []);
-
-  const heroItems: StorefrontHeroItem[] = [
-    {
-      id: "hero-physical",
-      badge: "Fabricación",
-      title: "Accesorios y Bases en Impresión 3D",
-      accent: "Impresión 3D",
-      description:
-        "Piezas personalizadas, materiales premium y acabados limpios para consolas, mandos y escritorios gamer.",
-      ctaLabel: "Ver Colección",
-      image: "/images/ps5_3d_stand.png",
-      imageAlt: "Accesorio gamer impreso en 3D",
-      tone: "blue",
-      featured: true,
-      onCtaClick: () =>
-        document.getElementById("products")?.scrollIntoView({ behavior: "smooth" }),
-    },
-    {
-      id: "hero-materials",
-      badge: "Materiales",
-      title: "PLA+, PETG y Resina",
-      accent: "para cada uso",
-      description:
-        "Seleccionamos el material ideal según resistencia, textura y el look que quieres para tu setup.",
-      ctaLabel: "Hablar por WhatsApp",
-      image: "/images/apple_icloud.png",
-      imageAlt: "Textura y materiales premium",
-      tone: "neutral",
-      onCtaClick: () =>
-        document.getElementById("footer")?.scrollIntoView({ behavior: "smooth" }),
-    },
-  ];
+  const featuredProducts = physicalProducts.filter((product) => product.featured).slice(0, 6);
+  const heroProducts = featuredProducts.length > 0 ? featuredProducts : physicalProducts.slice(0, 6);
 
   const handleAdd = (product: StorefrontGridProduct, quantity: number = 1, variant?: string) => {
     cart.addItem({
@@ -126,7 +95,13 @@ export default function PhysicalStorefrontPage() {
 
         <div className="mx-auto max-w-[1640px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
           <section id="featured">
-            <StorefrontHeroGrid items={heroItems} />
+            <StorefrontFeaturedCarousel
+              products={heroProducts}
+              onViewProduct={(product) => router.push(`/product/${product.id}`)}
+              onBrowseCatalog={() => router.push("/catalog")}
+              emptyTitle="Lo mejor de Raketech 3D se mostrará aquí"
+              emptyDescription="Marca productos como destacados desde el panel para convertir ofertas, diseños nuevos o piezas premium en la primera impresión de la tienda."
+            />
           </section>
 
           <section id="products" className="pt-12">

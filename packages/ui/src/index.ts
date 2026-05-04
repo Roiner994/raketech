@@ -24,6 +24,7 @@ export { StorefrontHeader } from './components/StorefrontHeader';
 export type { StorefrontNavLink } from './components/StorefrontHeader';
 export { StorefrontHeroGrid } from './components/StorefrontHeroGrid';
 export type { StorefrontHeroItem } from './components/StorefrontHeroGrid';
+export { StorefrontFeaturedCarousel } from './components/StorefrontFeaturedCarousel';
 export { StorefrontShowcaseCard } from './components/StorefrontShowcaseCard';
 export type { StorefrontShowcaseCardProps } from './components/StorefrontShowcaseCard';
 export { StorefrontProductGrid } from './components/StorefrontProductGrid';

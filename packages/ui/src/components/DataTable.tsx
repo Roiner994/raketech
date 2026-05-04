@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Edit, Trash2, Gamepad2, Printer, ChevronUp, ChevronDown } from 'lucide-react';
+import { Search, Edit, Trash2, Gamepad2, Printer, ChevronUp, ChevronDown, Star } from 'lucide-react';
 import { Badge } from './ui/Badge';
 
 export interface TableProduct {
@@ -17,18 +17,30 @@ export interface TableProduct {
   description?: string;
   category?: string;
   featuresHtml?: string;
+  featured?: boolean;
 }
 
 interface DataTableProps {
   products: TableProduct[];
   onEdit?: (product: TableProduct) => void;
   onDelete?: (id: string) => void;
+  onToggleFeatured?: (product: TableProduct) => void;
 }
 
 type SortKey = 'title' | 'price' | 'stock';
 type SortDir = 'asc' | 'desc';
 
-export function DataTable({ products, onEdit, onDelete }: DataTableProps) {
+function SortIcon({ activeKey, activeDirection, col }: { activeKey: SortKey; activeDirection: SortDir; col: SortKey }) {
+  if (activeKey !== col) {
+    return <ChevronUp className="w-3 h-3 text-slate-700" />;
+  }
+
+  return activeDirection === 'asc'
+    ? <ChevronUp className="w-3 h-3 text-[#3B82F6]" />
+    : <ChevronDown className="w-3 h-3 text-[#3B82F6]" />;
+}
+
+export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: DataTableProps) {
   const [search, setSearch] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('title');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
@@ -47,13 +59,6 @@ export function DataTable({ products, onEdit, onDelete }: DataTableProps) {
       const dir = sortDir === 'asc' ? 1 : -1;
       return aVal < bVal ? -dir : aVal > bVal ? dir : 0;
     });
-
-  const SortIcon = ({ col }: { col: SortKey }) =>
-    sortKey === col
-      ? sortDir === 'asc'
-        ? <ChevronUp className="w-3 h-3 text-[#3B82F6]" />
-        : <ChevronDown className="w-3 h-3 text-[#3B82F6]" />
-      : <ChevronUp className="w-3 h-3 text-slate-700" />;
 
   return (
     <div className="bg-[#1E293B] border border-slate-800 rounded-2xl overflow-hidden">
@@ -83,20 +88,20 @@ export function DataTable({ products, onEdit, onDelete }: DataTableProps) {
                 className="px-4 py-3.5 font-medium cursor-pointer hover:text-slate-200 transition-colors select-none"
                 onClick={() => toggleSort('title')}
               >
-                <div className="flex items-center gap-1.5">Nombre <SortIcon col="title" /></div>
+                <div className="flex items-center gap-1.5">Nombre <SortIcon activeKey={sortKey} activeDirection={sortDir} col="title" /></div>
               </th>
               <th className="px-4 py-3.5 font-medium">Tipo</th>
               <th
                 className="px-4 py-3.5 font-medium cursor-pointer hover:text-slate-200 transition-colors select-none"
                 onClick={() => toggleSort('price')}
               >
-                <div className="flex items-center gap-1.5">Precio <SortIcon col="price" /></div>
+                <div className="flex items-center gap-1.5">Precio <SortIcon activeKey={sortKey} activeDirection={sortDir} col="price" /></div>
               </th>
               <th
                 className="px-4 py-3.5 font-medium cursor-pointer hover:text-slate-200 transition-colors select-none"
                 onClick={() => toggleSort('stock')}
               >
-                <div className="flex items-center gap-1.5">Stock <SortIcon col="stock" /></div>
+                <div className="flex items-center gap-1.5">Stock <SortIcon activeKey={sortKey} activeDirection={sortDir} col="stock" /></div>
               </th>
               <th className="px-6 py-3.5 font-medium text-right">Acciones</th>
             </tr>
@@ -153,18 +158,31 @@ export function DataTable({ products, onEdit, onDelete }: DataTableProps) {
                   </td>
                   {/* Actions */}
                   <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        onClick={() => onToggleFeatured?.(product)}
+                        aria-label={product.featured ? `Quitar destacado de ${product.title}` : `Marcar ${product.title} como destacado`}
+                        className={[
+                          'inline-flex h-9 items-center gap-1.5 rounded-lg border px-3 text-xs font-bold transition-colors',
+                          product.featured
+                            ? 'border-amber-400/20 bg-amber-400/10 text-amber-200 hover:bg-amber-400/15'
+                            : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-amber-400/30 hover:text-amber-200',
+                        ].join(' ')}
+                      >
+                        <Star className={`h-3.5 w-3.5 ${product.featured ? 'fill-current' : ''}`} />
+                        {product.featured ? 'Destacado' : 'Destacar'}
+                      </button>
                       <button
                         onClick={() => onEdit?.(product)}
                         aria-label={`Editar ${product.title}`}
-                        className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-slate-400 transition-colors hover:text-white"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => onDelete?.(product.id)}
                         aria-label={`Eliminar ${product.title}`}
-                        className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-slate-400 transition-colors hover:border-red-400/30 hover:text-red-400"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

@@ -17,6 +17,7 @@ export interface ProductFormValues {
   price: string;
   description: string;
   category: string;
+  featured: boolean;
   imageUrl: string;
   gallery: string[];
   type: ProductFormType;
@@ -70,6 +71,7 @@ const DEFAULT_VALUES: ProductFormValues = {
   price: '',
   description: '',
   category: '',
+  featured: false,
   imageUrl: '',
   gallery: [],
   type: 'Digital',
@@ -266,7 +268,7 @@ export function ProductFormModal({
     };
   }, [clearPendingUrls]);
 
-  const set = (key: keyof ProductFormValues, value: string) =>
+  const set = <K extends keyof ProductFormValues>(key: K, value: ProductFormValues[K]) =>
     setValues((current) => ({ ...current, [key]: value }));
 
   const addFiles = (fileList: FileList | File[]) => {
@@ -457,7 +459,7 @@ export function ProductFormModal({
                   <Toggle
                     options={['Digital', 'Físico']}
                     value={values.type}
-                    onChange={(value) => set('type', value)}
+                    onChange={(value) => set('type', value as ProductFormType)}
                   />
                 </Section>
               )}
@@ -697,6 +699,22 @@ export function ProductFormModal({
             </div>
 
             <div className="space-y-6">
+              <Section
+                title="Visibilidad en portada"
+                description="Define si este producto aparecerá en el carrusel principal de destacados de la tienda."
+              >
+                <div className="space-y-3">
+                  <Toggle
+                    options={['Normal', 'Destacado']}
+                    value={values.featured ? 'Destacado' : 'Normal'}
+                    onChange={(value) => set('featured', value === 'Destacado')}
+                  />
+                  <p className="text-sm text-slate-400">
+                    Los productos destacados se mostrarán primero en la portada para resaltar ofertas, lanzamientos o promociones.
+                  </p>
+                </div>
+              </Section>
+
               <Section
                 title="Contenido detallado"
                 description="Agrega los detalles ricos que se mostrarán en la vista completa del producto."

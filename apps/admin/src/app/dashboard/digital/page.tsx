@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { DataTable, ToastList, useToast, db } from "@raketech/ui";
 import type { TableProduct } from "@raketech/ui";
 import { Plus } from "lucide-react";
-import { collection, getDocs, query, where, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { consumeFlashToast } from "@/lib/flashToast";
 
@@ -35,6 +35,7 @@ export default function DigitalDashboardPage() {
           platform: data.platform,
           featuresHtml: data.featuresHtml,
           stock: data.stock || null,
+          featured: data.featured === true,
         });
       });
       setProducts(loadedProducts);
@@ -83,6 +84,18 @@ export default function DigitalDashboardPage() {
     }
   };
 
+  const handleToggleFeatured = async (product: TableProduct) => {
+    try {
+      await updateDoc(doc(db, "products", product.id), {
+        featured: !product.featured,
+      });
+      void fetchProducts();
+    } catch (error) {
+      console.error("Error updating featured state:", error);
+      showToast("Error actualizando destacado", { variant: "error" });
+    }
+  };
+
   return (
     <div className="p-6 space-y-8">
       {/* Page header */}
@@ -112,6 +125,7 @@ export default function DigitalDashboardPage() {
           products={products}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onToggleFeatured={handleToggleFeatured}
         />
       )}
 

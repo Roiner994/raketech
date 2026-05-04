@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import {
   CartDrawer,
   StorefrontFooter,
+  StorefrontFeaturedCarousel,
   StorefrontHeader,
-  StorefrontHeroGrid,
   StorefrontProductGrid,
   ToastList,
   useCart,
@@ -16,7 +16,6 @@ import { NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
 import type {
   ProductDetail,
   StorefrontGridProduct,
-  StorefrontHeroItem,
 } from "@raketech/ui";
 import { db } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -52,42 +51,8 @@ export default function DigitalStorefrontPage() {
     };
     fetchProducts();
   }, []);
-
-  const heroItems: StorefrontHeroItem[] = [
-    {
-      id: "hero-subscriptions",
-      badge: "Destacado",
-      title: "Suscripciones al Mejor Precio",
-      accent: "Mejor Precio",
-      description:
-        "Accede a miles de juegos y beneficios exclusivos con Xbox Game Pass, PS Plus y más. Entrega inmediata.",
-      ctaLabel: "Ver Catálogo",
-      image: "/images/xbox_game_pass.png",
-      imageAlt: "Control de videojuegos con iluminación verde",
-      tone: "green",
-      featured: true,
-      onCtaClick: () =>
-        document
-          .getElementById("subscriptions")
-          ?.scrollIntoView({ behavior: "smooth" }),
-    },
-    {
-      id: "hero-print",
-      badge: "Nuevo",
-      title: "Bases y Soportes en Impresión 3D",
-      accent: "Impresión 3D",
-      description:
-        "Eleva tu setup al siguiente nivel con soportes personalizados y de alta resistencia para tus consolas y controles.",
-      ctaLabel: "Explorar Accesorios",
-      image: "/images/ps5_3d_stand.png",
-      imageAlt: "Soporte de impresión 3D para consola",
-      tone: "blue",
-      onCtaClick: () =>
-        document
-          .getElementById("footer")
-          ?.scrollIntoView({ behavior: "smooth" }),
-    },
-  ];
+  const featuredProducts = digitalProducts.filter((product) => product.featured).slice(0, 6);
+  const heroProducts = featuredProducts.length > 0 ? featuredProducts : digitalProducts.slice(0, 6);
 
   const handleAdd = (product: StorefrontGridProduct, quantity: number = 1) => {
     cart.addItem({
@@ -129,7 +94,13 @@ export default function DigitalStorefrontPage() {
 
         <div className="mx-auto max-w-[1640px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
           <section id="featured">
-            <StorefrontHeroGrid items={heroItems} />
+            <StorefrontFeaturedCarousel
+              products={heroProducts}
+              onViewProduct={(product) => router.push(`/product/${product.id}`)}
+              onBrowseCatalog={() => router.push("/catalog")}
+              emptyTitle="Tus mejores ofertas digitales pueden vivir aquí"
+              emptyDescription="Marca productos como destacados desde el panel para que las suscripciones en oferta o con mejor conversión sean lo primero que vea cada visitante."
+            />
           </section>
 
           <section id="subscriptions" className="pt-12">
