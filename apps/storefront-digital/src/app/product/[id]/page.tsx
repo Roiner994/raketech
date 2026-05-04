@@ -12,7 +12,7 @@ import {
   useCart,
   useToast,
 } from '@raketech/ui';
-import { NAV_LINKS } from '@/lib/products';
+import { NAV_LINKS, mapDigitalFirestoreProduct } from '@/lib/products';
 import type { ProductDetail } from '@raketech/ui';
 import { db } from '@raketech/ui';
 import { doc, getDoc } from 'firebase/firestore';
@@ -33,20 +33,7 @@ export default function ProductPage() {
         const docRef = doc(db, "products", params.id as string);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists() && docSnap.data().type === 'digital') {
-          const data = docSnap.data();
-          setProduct({
-            id: docSnap.id,
-            name: data.title,
-            price: data.price,
-            image: data.imageUrl || "/images/placeholder.png",
-            imageAlt: data.title,
-            imageBg: "bg-slate-800",
-            category: data.category || "General",
-            description: data.description || "",
-            features: [], // Handled by featuresHtml
-            featuresHtml: data.featuresHtml || "",
-            gallery: data.imageUrl ? [data.imageUrl] : [],
-          });
+          setProduct(mapDigitalFirestoreProduct(docSnap.id, docSnap.data()));
         } else {
           setProduct(null);
         }

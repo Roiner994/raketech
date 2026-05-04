@@ -1,53 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  StatsCard,
-  DataTable,
-  ProductFormModal,
-  ToastList,
-  useToast,
-  db,
-} from "@raketech/ui";
-import type { TableProduct, ProductFormValues } from "@raketech/ui";
-import { ShoppingBag, TrendingUp, Plus } from "lucide-react";
-import { collection, getDocs, query, where, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
-
-const INITIAL_PRODUCTS: TableProduct[] = [
-  {
-    id: "xgpu-12",
-    title: "Xbox Game Pass Ultimate",
-    price: 14.99,
-    stock: null,
-    type: "digital",
-    platform: "Xbox",
-    category: "Suscripciones",
-    description: "Accede a cientos de juegos de alta calidad en consola, PC y la nube. Incluye EA Play y todos los beneficios de Xbox Live Gold.",
-    imageUrl: "/images/xbox_game_pass.png",
-    featuresHtml: `<ul><li><strong>Multijugador Online</strong>: Juega con amigos en la red más avanzada.</li><li><strong>Garantía Total</strong>: Código 100% original con soporte técnico.</li><li><strong>Entrega Instantánea</strong>: Recibe tu código por WhatsApp o correo.</li></ul>`,
-  },
-  {
-    id: "psplus-extra-12",
-    title: "PS Plus Extra 12 Meses",
-    price: 49.99,
-    stock: null,
-    type: "digital",
-    platform: "PlayStation",
-    category: "Suscripciones",
-    description: "La membresía definitiva de PlayStation. Incluye catálogo de juegos, clásicos, pruebas de juegos y multijugador online.",
-    imageUrl: "/images/ps_plus.png",
-    featuresHtml: `<ul><li><strong>Juego Online</strong>: Desbloquea el multijugador.</li><li><strong>Juegos Mensuales</strong>: Descarga juegos cada mes.</li></ul>`,
-  },
-];
+import { useCallback, useEffect, useState } from "react";
+import { DataTable, ToastList, useToast, db } from "@raketech/ui";
+import type { TableProduct } from "@raketech/ui";
+import { Plus } from "lucide-react";
+import { collection, getDocs, query, where, doc, deleteDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import { consumeFlashToast } from "@/lib/flashToast";
 
 export default function DigitalDashboardPage() {
   const [products, setProducts] = useState<TableProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<TableProduct | null>(null);
   const toast = useToast();
+  const { showToast } = toast;
+  const router = useRouter();
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setIsLoading(true);
       const q = query(collection(db, "products"), where("type", "==", "digital"));
@@ -62,6 +30,7 @@ export default function DigitalDashboardPage() {
           description: data.description,
           category: data.category,
           imageUrl: data.imageUrl,
+          gallery: data.gallery || [],
           type: "digital",
           platform: data.platform,
           featuresHtml: data.featuresHtml,
@@ -71,79 +40,47 @@ export default function DigitalDashboardPage() {
       setProducts(loadedProducts);
     } catch (error) {
       console.error("Error fetching products:", error);
-      toast.showToast("Error cargando productos", { variant: "error" });
+      showToast("Error cargando productos", { variant: "error" });
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    const timeoutId = window.setTimeout(() => {
+      void fetchProducts();
+    }, 0);
 
-  const handleSave = async (values: ProductFormValues) => {
-    try {
-      if (editingProduct) {
-        const docRef = doc(db, "products", editingProduct.id);
-        await updateDoc(docRef, {
-          title: values.title,
-          price: parseFloat(values.price),
-          description: values.description,
-          category: values.category,
-          imageUrl: values.imageUrl,
-          platform: values.platform,
-          featuresHtml: values.featuresHtml,
-        });
-        toast.showToast("Producto digital actualizado", { variant: "success" });
-      } else {
-        await addDoc(collection(db, "products"), {
-          title: values.title,
-          price: parseFloat(values.price),
-          description: values.description,
-          category: values.category,
-          imageUrl: values.imageUrl,
-          type: "digital",
-          platform: values.platform,
-          featuresHtml: values.featuresHtml,
-          stock: null,
-        });
-        toast.showToast("Producto digital agregado", {
-          description: values.title,
-          variant: "success",
-        });
-      }
-      setIsModalOpen(false);
-      setEditingProduct(null);
-      fetchProducts();
-    } catch (error) {
-      console.error("Error saving product:", error);
-      toast.showToast("Error guardando el producto", { variant: "error" });
+    return () => window.clearTimeout(timeoutId);
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    const flashToast = consumeFlashToast();
+    if (flashToast) {
+      showToast(flashToast.message, {
+        description: flashToast.description,
+        variant: flashToast.variant,
+      });
     }
-  };
+  }, [showToast]);
 
   const handleEdit = (product: TableProduct) => {
-    setEditingProduct(product);
-    setIsModalOpen(true);
+    router.push(`/dashboard/products/digital/${product.id}`);
   };
 
   const handleDelete = async (id: string) => {
     try {
       const product = products.find((p) => p.id === id);
       await deleteDoc(doc(db, "products", id));
-      toast.showToast("Producto eliminado", {
+      showToast("Producto eliminado", {
         description: product?.title,
         variant: "error",
       });
-      fetchProducts();
+      void fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
-      toast.showToast("Error al eliminar el producto", { variant: "error" });
+      showToast("Error al eliminar el producto", { variant: "error" });
     }
-  };
-
-  const stats = {
-    total: products.reduce((s, p) => s + p.price, 0),
-    active: products.length,
   };
 
   return (
@@ -157,33 +94,12 @@ export default function DigitalDashboardPage() {
           </p>
         </div>
         <button
-          onClick={() => {
-            setEditingProduct(null);
-            setIsModalOpen(true);
-          }}
+          onClick={() => router.push("/dashboard/products/digital/new")}
           className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-200 text-slate-900 text-sm font-bold rounded-xl transition-all active:scale-95"
         >
           <Plus className="w-4 h-4" />
           Nuevo Producto Digital
         </button>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <StatsCard
-          label="Suscripciones Activas"
-          value={stats.active}
-          trend="2 nuevas"
-          trendPositive
-          icon={<ShoppingBag className="w-4 h-4" />}
-        />
-        <StatsCard
-          label="Ingreso Mensual (Est.)"
-          value={`$${stats.total.toFixed(2)}`}
-          trend="5% este mes"
-          trendPositive
-          icon={<TrendingUp className="w-4 h-4" />}
-        />
       </div>
 
       {/* Table */}
@@ -198,31 +114,6 @@ export default function DigitalDashboardPage() {
           onDelete={handleDelete}
         />
       )}
-
-      {/* Modal */}
-      <ProductFormModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingProduct(null);
-        }}
-        onSave={handleSave}
-        title={editingProduct ? "Editar Producto Digital" : "Agregar Producto Digital"}
-        fixedType="Digital"
-        initialValues={
-          editingProduct
-            ? {
-                title: editingProduct.title,
-                price: editingProduct.price.toString(),
-                description: editingProduct.description ?? "",
-                category: editingProduct.category ?? "",
-                imageUrl: editingProduct.imageUrl ?? "",
-                platform: editingProduct.platform ?? "",
-                featuresHtml: editingProduct.featuresHtml ?? "",
-              }
-            : undefined
-        }
-      />
 
       <ToastList toasts={toast.toasts} onDismiss={toast.dismissToast} />
     </div>

@@ -90,3 +90,34 @@ export const PHYSICAL_PRODUCTS: ProductDetail[] = [
     gallery: ["/images/switch_dock.png", "/images/headphone_stand.png"]
   },
 ];
+
+export function mapPhysicalFirestoreProduct(
+  id: string,
+  data: Record<string, unknown>
+): ProductDetail {
+  const gallery = Array.isArray(data.gallery)
+    ? data.gallery.filter((value): value is string => typeof value === "string" && value.length > 0)
+    : [];
+  const imageUrl = typeof data.imageUrl === "string" && data.imageUrl.length > 0
+    ? data.imageUrl
+    : "";
+  const normalizedGallery = gallery.length > 0 ? gallery : imageUrl ? [imageUrl] : [];
+  const material = typeof data.material === "string" ? data.material : "";
+
+  return {
+    id,
+    name: typeof data.title === "string" ? data.title : "",
+    price: typeof data.price === "number" ? data.price : 0,
+    image: imageUrl || "/images/placeholder.png",
+    imageAlt: typeof data.title === "string" ? data.title : "Producto",
+    imageBg: "bg-slate-800",
+    category: typeof data.category === "string" && data.category.length > 0 ? data.category : "General",
+    description: typeof data.description === "string" ? data.description : "",
+    features: [],
+    featuresHtml: typeof data.featuresHtml === "string" ? data.featuresHtml : "",
+    gallery: normalizedGallery,
+    variants: material
+      ? [{ label: material, value: material.toLowerCase().replace(/\s+/g, "-") }]
+      : undefined,
+  };
+}

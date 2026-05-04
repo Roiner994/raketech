@@ -5,7 +5,7 @@ import { Input } from './ui/Input';
 import { Button } from './ui/Button';
 
 interface LoginCardProps {
-  onLogin?: (email: string, password: string) => void;
+  onLogin?: (email: string, password: string) => void | Promise<void>;
   isLoading?: boolean;
   error?: string;
 }

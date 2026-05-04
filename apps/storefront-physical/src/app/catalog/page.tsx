@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@raketech/ui";
 import { useRouter } from "next/navigation";
-import { NAV_LINKS } from "@/lib/products";
+import { NAV_LINKS, mapPhysicalFirestoreProduct } from "@/lib/products";
 import type { StorefrontGridProduct, ProductDetail } from "@raketech/ui";
 import { db } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -31,22 +31,8 @@ export default function PhysicalCatalogPage() {
         const q = query(collection(db, "products"), where("type", "==", "physical"));
         const querySnapshot = await getDocs(q);
         const products: ProductDetail[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          products.push({
-            id: doc.id,
-            name: data.title,
-            price: data.price,
-            image: data.imageUrl || "/images/placeholder.png",
-            imageAlt: data.title,
-            imageBg: "bg-slate-800",
-            category: data.category || "General",
-            description: data.description || "",
-            features: [], // Handled by featuresHtml now
-            featuresHtml: data.featuresHtml || "",
-            gallery: data.imageUrl ? [data.imageUrl] : [],
-            variants: data.material ? [data.material] : undefined,
-          });
+        querySnapshot.forEach((productDoc) => {
+          products.push(mapPhysicalFirestoreProduct(productDoc.id, productDoc.data()));
         });
         setPhysicalProducts(products);
       } catch (error) {

@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { AdminSidebar } from "@raketech/ui";
+import { useEffect, useState } from "react";
+import { AdminSidebar, auth } from "@raketech/ui";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Menu } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
@@ -10,13 +12,50 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
+  const digitalActive = pathname === "/dashboard/digital" || pathname.startsWith("/dashboard/products/digital");
+  const physicalActive = pathname === "/dashboard/physical" || pathname.startsWith("/dashboard/products/physical");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.replace("/");
+      } else {
+        setIsCheckingSession(false);
+      }
+    });
+
+    return unsubscribe;
+  }, [router]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } finally {
+      router.replace("/");
+    }
+  };
+
+  if (isCheckingSession) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#0B1120]">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-blue-400 border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#0B1120]">
       <AdminSidebar
+        links={[
+          { label: "Juegos Digitales", href: "/dashboard/digital", icon: "games", active: digitalActive },
+          { label: "Impresiones 3D", href: "/dashboard/physical", icon: "print", active: physicalActive },
+        ]}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        onLogout={() => (window.location.href = "/")}
+        onLogout={() => void handleLogout()}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile top bar */}

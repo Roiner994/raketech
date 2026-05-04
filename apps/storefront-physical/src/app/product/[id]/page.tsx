@@ -12,7 +12,7 @@ import {
   useCart,
   useToast,
 } from '@raketech/ui';
-import { NAV_LINKS } from '@/lib/products';
+import { NAV_LINKS, mapPhysicalFirestoreProduct } from '@/lib/products';
 import type { ProductDetail } from "@raketech/ui";
 import { db } from "@raketech/ui";
 import { doc, getDoc } from "firebase/firestore";
@@ -36,21 +36,7 @@ export default function ProductPage() {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          const data = docSnap.data();
-          setProduct({
-            id: docSnap.id,
-            name: data.title,
-            price: data.price,
-            image: data.imageUrl || "/images/placeholder.png",
-            imageAlt: data.title,
-            imageBg: "bg-slate-800",
-            category: data.category || "General",
-            description: data.description || "",
-            features: [], // Handled by featuresHtml
-            featuresHtml: data.featuresHtml || "",
-            gallery: data.imageUrl ? [data.imageUrl] : [],
-            variants: data.material ? [data.material] : undefined,
-          });
+          setProduct(mapPhysicalFirestoreProduct(docSnap.id, docSnap.data()));
         } else {
           setProduct(null);
         }

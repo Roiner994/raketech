@@ -13,6 +13,7 @@ export interface TableProduct {
   platform?: string;
   material?: string;
   imageUrl?: string;
+  gallery?: string[];
   description?: string;
   category?: string;
   featuresHtml?: string;
