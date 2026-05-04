@@ -3,13 +3,22 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
+function requiredEnv(name: string) {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+
+  return value;
+}
+
 const firebaseConfig = {
-  projectId: "raketech-app-2026",
-  appId: "1:93292793240:web:a9c82aa56c07f8f317efed",
-  storageBucket: "raketech-app-2026.firebasestorage.app",
-  apiKey: "AIzaSyBL0qsRIItrY43QuySEBfV22eX5pc-0zbc",
-  authDomain: "raketech-app-2026.firebaseapp.com",
-  messagingSenderId: "93292793240"
+  projectId: requiredEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID"),
+  appId: requiredEnv("NEXT_PUBLIC_FIREBASE_APP_ID"),
+  storageBucket: requiredEnv("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"),
+  apiKey: requiredEnv("NEXT_PUBLIC_FIREBASE_API_KEY"),
+  authDomain: requiredEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"),
+  messagingSenderId: requiredEnv("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
