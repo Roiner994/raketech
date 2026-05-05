@@ -7,8 +7,8 @@ import { Select } from './ui/Select';
 import { Toggle } from './ui/Toggle';
 import { Button } from './ui/Button';
 import { RichTextEditor } from './ui/RichTextEditor';
-import { storage } from '../lib/firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import type { FirebaseStorage } from 'firebase/storage';
 
 export type ProductFormType = 'Digital' | 'Físico';
 
@@ -31,6 +31,7 @@ interface ProductFormModalProps {
   isOpen?: boolean;
   onClose: () => void;
   onSave: (values: ProductFormValues) => void | Promise<void>;
+  storage: FirebaseStorage;
   initialValues?: Partial<ProductFormValues>;
   title?: string;
   fixedType?: ProductFormType;
@@ -122,7 +123,7 @@ function createSavedImages(gallery: string[]) {
   }));
 }
 
-function uploadFile(file: File) {
+function uploadFile(file: File, storage: FirebaseStorage) {
   const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -232,6 +233,7 @@ export function ProductFormModal({
   isOpen,
   onClose,
   onSave,
+  storage,
   initialValues,
   title = 'Agregar Producto',
   fixedType,
@@ -372,7 +374,7 @@ export function ProductFormModal({
         }
 
         const optimizedFile = await optimizeImage(image.file);
-        const uploadedUrl = await uploadFile(optimizedFile);
+      const uploadedUrl = await uploadFile(optimizedFile, storage);
         uploadedUrlsById.set(image.id, uploadedUrl);
 
         completedUploads += 1;

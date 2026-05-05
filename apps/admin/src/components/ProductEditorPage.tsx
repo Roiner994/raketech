@@ -7,10 +7,10 @@ import {
   ProductFormModal,
   ToastList,
   useToast,
-  db,
 } from '@raketech/ui';
 import type { ProductFormValues, ProductFormType, TableProduct } from '@raketech/ui';
 import { setFlashToast } from '@/lib/flashToast';
+import { db, storage } from '@/lib/firebase';
 
 type ProductTypeSlug = 'digital' | 'physical';
 
@@ -213,6 +213,7 @@ export function ProductEditorPage({ productType, productId }: ProductEditorPageP
         layout="page"
         onClose={() => router.push(backHref(productType))}
         onSave={handleSave}
+        storage={storage}
         title={productId ? (productType === 'digital' ? 'Editar Producto Digital' : 'Editar Producto Físico') : (productType === 'digital' ? 'Nuevo Producto Digital' : 'Nuevo Producto Físico')}
         fixedType={slugToFixedType(productType)}
         initialValues={initialValues}

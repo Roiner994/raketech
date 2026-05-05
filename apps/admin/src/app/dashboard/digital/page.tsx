@@ -1,12 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { DataTable, ToastList, useToast, db } from "@raketech/ui";
+import { DataTable, ToastList, useToast } from "@raketech/ui";
 import type { TableProduct } from "@raketech/ui";
 import { Plus } from "lucide-react";
 import { collection, getDocs, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { consumeFlashToast } from "@/lib/flashToast";
+import { db } from "@/lib/firebase";
 
 export default function DigitalDashboardPage() {
   const [products, setProducts] = useState<TableProduct[]>([]);

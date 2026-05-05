@@ -13,8 +13,8 @@ import {
 import { useRouter } from "next/navigation";
 import { NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
 import type { StorefrontGridProduct, ProductDetail } from "@raketech/ui";
-import { db } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function DigitalCatalogPage() {
   const router = useRouter();

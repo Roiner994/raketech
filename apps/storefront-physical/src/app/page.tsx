@@ -17,8 +17,8 @@ import type {
   ProductDetail,
   StorefrontGridProduct,
 } from "@raketech/ui";
-import { db } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 

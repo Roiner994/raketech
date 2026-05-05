@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { LoginCard } from "@raketech/ui";
-import { auth } from "@raketech/ui";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase";
 
 export default function AdminLoginPage() {
   const router = useRouter();

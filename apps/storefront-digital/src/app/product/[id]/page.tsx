@@ -14,8 +14,8 @@ import {
 } from '@raketech/ui';
 import { NAV_LINKS, mapDigitalFirestoreProduct } from '@/lib/products';
 import type { ProductDetail } from '@raketech/ui';
-import { db } from '@raketech/ui';
 import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function ProductPage() {
   const params = useParams();

@@ -13,8 +13,8 @@ import {
 import { useRouter } from "next/navigation";
 import { NAV_LINKS, mapPhysicalFirestoreProduct } from "@/lib/products";
 import type { StorefrontGridProduct, ProductDetail } from "@raketech/ui";
-import { db } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function PhysicalCatalogPage() {
   const router = useRouter();

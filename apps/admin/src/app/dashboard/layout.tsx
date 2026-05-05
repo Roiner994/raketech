@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AdminSidebar, auth } from "@raketech/ui";
+import { AdminSidebar } from "@raketech/ui";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase";
 
 export default function DashboardLayout({
   children,
