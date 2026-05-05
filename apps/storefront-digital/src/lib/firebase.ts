@@ -1,4 +1,4 @@
-import { getApp, getApps, initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -10,14 +10,16 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-for (const [key, value] of Object.entries(firebaseConfig)) {
-  if (!value) {
-    throw new Error(`Missing required environment variable: NEXT_PUBLIC_FIREBASE_${key.replace(/[A-Z]/g, (match) => `_${match}`).toUpperCase()}`);
-  }
-}
+const hasFirebaseConfig = Object.values(firebaseConfig).every(
+  (value): value is string => typeof value === "string" && value.length > 0
+);
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const app: FirebaseApp | null = hasFirebaseConfig
+  ? getApps().length
+    ? getApp()
+    : initializeApp(firebaseConfig)
+  : null;
 
-const db = getFirestore(app);
+const db = app ? getFirestore(app) : null;
 
-export { app, db };
+export { app, db, hasFirebaseConfig };

@@ -11,21 +11,28 @@ import {
   useToast,
 } from "@raketech/ui";
 import { useRouter } from "next/navigation";
-import { NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
+import { DIGITAL_PRODUCTS, NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
 import type { StorefrontGridProduct, ProductDetail } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db, hasFirebaseConfig } from "@/lib/firebase";
 
 export default function DigitalCatalogPage() {
   const router = useRouter();
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [digitalProducts, setDigitalProducts] = useState<ProductDetail[]>([]);
+  const [digitalProducts, setDigitalProducts] = useState<ProductDetail[]>(
+    () => (!db ? DIGITAL_PRODUCTS : [])
+  );
   const [isLoading, setIsLoading] = useState(true);
   const cart = useCart();
   const toast = useToast();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!db) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         const q = query(collection(db, "products"), where("type", "==", "digital"));
@@ -42,6 +49,14 @@ export default function DigitalCatalogPage() {
       }
     };
     fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (!hasFirebaseConfig) {
+      console.warn(
+        "Firebase env vars are missing. Using local fallback products in storefront-digital."
+      );
+    }
   }, []);
 
   const handleAdd = (product: StorefrontGridProduct, quantity: number = 1) => {

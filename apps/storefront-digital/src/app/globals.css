@@ -3,6 +3,8 @@
 @source "../../../../packages/ui/src";
 
 :root {
+  --font-inter: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   --bg-primary: #07111f;
   --bg-secondary: #0b1627;
   --bg-card: #0f1b2d;

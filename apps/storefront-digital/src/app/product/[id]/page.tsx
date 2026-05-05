@@ -12,10 +12,10 @@ import {
   useCart,
   useToast,
 } from '@raketech/ui';
-import { NAV_LINKS, mapDigitalFirestoreProduct } from '@/lib/products';
+import { DIGITAL_PRODUCTS, NAV_LINKS, mapDigitalFirestoreProduct } from '@/lib/products';
 import type { ProductDetail } from '@raketech/ui';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db, hasFirebaseConfig } from '@/lib/firebase';
 
 export default function ProductPage() {
   const params = useParams();
@@ -28,6 +28,12 @@ export default function ProductPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
+      if (!db) {
+        setProduct(DIGITAL_PRODUCTS.find((item) => item.id === (params.id as string)) ?? null);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         const docRef = doc(db, "products", params.id as string);
@@ -47,6 +53,14 @@ export default function ProductPage() {
       fetchProduct();
     }
   }, [params.id]);
+
+  useEffect(() => {
+    if (!hasFirebaseConfig) {
+      console.warn(
+        "Firebase env vars are missing. Using local fallback product detail in storefront-digital."
+      );
+    }
+  }, []);
 
   if (isLoading) {
     return (
