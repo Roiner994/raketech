@@ -6,6 +6,7 @@ import {
   StorefrontFooter,
   StorefrontHeader,
   StorefrontProductGrid,
+  StorefrontThemeLoadingShell,
   ToastList,
   useCart,
   useToast,
@@ -61,6 +62,15 @@ export default function PhysicalCatalogPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <StorefrontThemeLoadingShell
+        title="Cargando catálogo 3D"
+        description="Preparando todos los accesorios y el tema correcto."
+      />
+    );
+  }
+
   return (
     <>
       <CartDrawer
@@ -83,19 +93,13 @@ export default function PhysicalCatalogPage() {
         />
 
         <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
-          {isLoading ? (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
-            </div>
-          ) : (
-            <StorefrontProductGrid
-              title="Todos los Accesorios"
-              subtitle="Explora nuestro catálogo completo de accesorios y bases 3D."
-              products={physicalProducts}
-              onAddToCart={handleAdd}
-              onViewDetail={(p) => router.push(`/product/${p.id}`)}
-            />
-          )}
+          <StorefrontProductGrid
+            title="Todos los Accesorios"
+            subtitle="Explora nuestro catálogo completo de accesorios y bases 3D."
+            products={physicalProducts}
+            onAddToCart={handleAdd}
+            onViewDetail={(p) => router.push(`/product/${p.id}`)}
+          />
         </div>
 
         <StorefrontFooter

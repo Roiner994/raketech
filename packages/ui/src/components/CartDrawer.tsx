@@ -18,14 +18,14 @@ interface CartDrawerProps {
 
 function buildWhatsAppMessage(items: CartItem[], total: number, storeName = 'Raketech'): string {
   const lines = items.map(
-    (i) => `• ${i.title}${i.variant ? ` (${i.variant})` : ''} x${i.quantity} — $${(i.price * i.quantity).toFixed(2)}`
+    (i) => `• ${i.title}${i.variant ? ` (${i.variant})` : ''} x${i.quantity} — $${((i.price * i.quantity) % 1 === 0 ? (i.price * i.quantity) : (i.price * i.quantity).toFixed(2))}`
   );
   const text = [
     `¡Hola ${storeName}! Me gustaría realizar el siguiente pedido:`,
     '',
     ...lines,
     '',
-    `*Total: $${total.toFixed(2)}*`,
+    `*Total: $${total % 1 === 0 ? total : total.toFixed(2)}*`,
   ].join('\n');
   return encodeURIComponent(text);
 }
@@ -54,17 +54,17 @@ export function CartDrawer({
 
       {/* Drawer */}
       <div
-        className={`fixed right-0 top-0 z-50 h-full w-full max-w-md bg-[#1E293B] border-l border-slate-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed right-0 top-0 z-50 h-full w-full max-w-md border-l border-[var(--border-subtle)] bg-[var(--surface-drawer)] shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800 bg-[#0B1120]/50 shrink-0">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <ShoppingCart className="w-5 h-5 text-slate-400" />
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--surface-drawer-header)] p-6 shrink-0">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <ShoppingCart className="w-5 h-5 text-[var(--text-muted)]" />
             Mi Carrito
             {items.length > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 bg-[#10B981]/20 text-[#10B981] text-xs font-bold rounded">
+              <span className="ml-1 rounded bg-[rgba(34,197,94,0.12)] px-1.5 py-0.5 text-xs font-bold text-[var(--accent-success)]">
                 {items.reduce((s, i) => s + i.quantity, 0)}
               </span>
             )}
@@ -72,7 +72,7 @@ export function CartDrawer({
           <button
             onClick={onClose}
             aria-label="Cerrar carrito"
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            className="rounded-lg p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-soft)] hover:text-[var(--text-primary)]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -82,22 +82,22 @@ export function CartDrawer({
         <div className="flex-1 overflow-y-auto p-6 space-y-3">
           {items.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center gap-4 py-20">
-              <div className="w-20 h-20 rounded-full bg-slate-800 flex items-center justify-center">
-                <ShoppingBag className="w-10 h-10 text-slate-600" />
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--surface-muted)]">
+                <ShoppingBag className="w-10 h-10 text-[var(--text-muted)]" />
               </div>
               <div>
-                <p className="text-base font-semibold text-slate-300">Tu carrito está vacío</p>
-                <p className="text-sm text-slate-500 mt-1">Agrega productos para comenzar</p>
+                <p className="text-base font-semibold text-[var(--text-secondary)]">Tu carrito está vacío</p>
+                <p className="mt-1 text-sm text-[var(--text-muted)]">Agrega productos para comenzar</p>
               </div>
             </div>
           ) : (
             items.map((item) => (
               <div
                 key={`${item.id}-${item.variant || 'default'}`}
-                className="flex items-start gap-3 bg-[#0B1120] p-4 rounded-xl border border-slate-800"
+                className="flex items-start gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-drawer-item)] p-4"
               >
                 {/* Image/Icon */}
-                <div className="relative w-14 h-14 rounded-lg bg-slate-800 flex items-center justify-center shrink-0 overflow-hidden border border-white/5">
+                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-muted)]">
                   {item.image ? (
                     <Image 
                       src={item.image} 
@@ -107,34 +107,34 @@ export function CartDrawer({
                       className="object-cover"
                     />
                   ) : item.type === 'digital' ? (
-                    <Gamepad2 className="w-6 h-6 text-[#3B82F6]" />
+                    <Gamepad2 className="w-6 h-6 text-[var(--accent-primary)]" />
                   ) : (
-                    <Printer className="w-6 h-6 text-slate-400" />
+                    <Printer className="w-6 h-6 text-[var(--text-muted)]" />
                   )}
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white leading-snug line-clamp-1">{item.title}</p>
+                  <p className="line-clamp-1 text-sm font-semibold leading-snug text-[var(--text-primary)]">{item.title}</p>
                   {item.variant && (
-                    <span className="inline-block mt-1 px-1.5 py-0.5 bg-white/5 text-slate-400 text-[10px] uppercase font-bold rounded">
+                    <span className="mt-1 inline-block rounded bg-[var(--surface-soft)] px-1.5 py-0.5 text-[10px] font-bold uppercase text-[var(--text-muted)]">
                       {item.variant}
                     </span>
                   )}
-                  <p className="text-sm font-bold text-white mt-2">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="mt-2 text-sm font-bold text-[var(--text-primary)]">${(item.price * item.quantity) % 1 === 0 ? (item.price * item.quantity) : (item.price * item.quantity).toFixed(2)}</p>
 
                   {/* Quantity controls */}
                   <div className="flex items-center gap-2 mt-2">
                     <button
                       onClick={() => onUpdateQuantity(item.id, item.quantity - 1, item.variant)}
-                      className="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded bg-[var(--surface-muted)] text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-interactive-hover)]"
                     >
                       <Minus className="w-3 h-3" />
                     </button>
-                    <span className="text-xs font-semibold text-white w-4 text-center">{item.quantity}</span>
+                    <span className="w-4 text-center text-xs font-semibold text-[var(--text-primary)]">{item.quantity}</span>
                     <button
                       onClick={() => onUpdateQuantity(item.id, item.quantity + 1, item.variant)}
-                      className="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition-colors"
+                      className="flex h-6 w-6 items-center justify-center rounded bg-[var(--surface-muted)] text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-interactive-hover)]"
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -145,7 +145,7 @@ export function CartDrawer({
                 <button
                   onClick={() => onRemove(item.id, item.variant)}
                   aria-label={`Eliminar ${item.title}`}
-                  className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors shrink-0"
+                  className="shrink-0 rounded-lg p-1.5 text-[var(--text-muted)] transition-colors hover:bg-red-400/10 hover:text-red-400"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -155,10 +155,10 @@ export function CartDrawer({
         </div>
 
         {/* Footer */}
-        <div className="shrink-0 p-6 border-t border-slate-800 bg-[#0B1120] space-y-4">
+        <div className="shrink-0 space-y-4 border-t border-[var(--border-subtle)] bg-[var(--surface-drawer-item)] p-6">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-400">Total a pagar</span>
-            <span className="text-2xl font-bold text-white">${total.toFixed(2)}</span>
+            <span className="text-sm text-[var(--text-muted)]">Total a pagar</span>
+            <span className="text-2xl font-bold text-[var(--text-primary)]">${total % 1 === 0 ? total : total.toFixed(2)}</span>
           </div>
           <a
             href={items.length > 0 ? whatsappUrl : undefined}
@@ -169,8 +169,8 @@ export function CartDrawer({
               w-full flex items-center justify-center gap-2.5 py-4 rounded-xl font-bold text-lg
               transition-all duration-200 active:scale-95
               ${items.length === 0
-                ? 'bg-slate-800 text-slate-600 cursor-not-allowed pointer-events-none'
-                : 'bg-[#25D366] hover:bg-[#1EBE5A] text-white shadow-lg shadow-[#25D366]/20'}
+                ? 'pointer-events-none cursor-not-allowed bg-[var(--surface-muted)] text-[var(--text-muted)]'
+                : 'bg-[var(--accent-whatsapp)] text-white shadow-lg shadow-[rgba(37,211,102,0.2)] hover:bg-[var(--accent-whatsapp-hover)]'}
             `}
           >
             <MessageCircle className="w-5 h-5" />

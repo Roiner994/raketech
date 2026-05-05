@@ -35,16 +35,16 @@ export function DigitalHero({
     <section className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center py-8">
       {/* Left side text */}
       <div className="space-y-6">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-200">
-          <Sparkles className="h-3.5 w-3.5 text-blue-400" />
+        <span className="inline-flex items-center gap-2 rounded-full border border-[var(--surface-chip-border)] bg-[var(--surface-chip)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">
+          <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
           Nuevas Suscripciones Disponibles
         </span>
 
         <div className="space-y-4">
-          <h2 className="text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl">
+          <h2 className="text-5xl font-extrabold leading-tight tracking-tight text-[var(--text-primary)] sm:text-6xl">
             Tus Juegos Favoritos
           </h2>
-          <p className="max-w-md text-base leading-relaxed text-slate-300">
+          <p className="max-w-md text-base leading-relaxed text-[var(--text-secondary)]">
             Accede a las mejores suscripciones de juegos al instante.
             Seguridad, rapidez y soporte garantizado para una experiencia
             premium.
@@ -52,10 +52,10 @@ export function DigitalHero({
         </div>
 
         <div className="flex flex-col gap-4 pt-2 sm:flex-row">
-          <Button variant="primary" size="lg" onClick={onBrowseCatalog} className="bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold px-8 py-3">
+          <Button variant="primary" size="lg" onClick={onBrowseCatalog} className="rounded-lg px-8 py-3 font-semibold">
             Ver Catálogo
           </Button>
-          <Button variant="secondary" size="lg" onClick={() => onViewProduct?.(products[safeActiveIndex])} className="border border-blue-500/30 bg-transparent text-slate-200 hover:bg-white/5 rounded-lg font-semibold px-8 py-3">
+          <Button variant="secondary" size="lg" onClick={() => onViewProduct?.(products[safeActiveIndex])} className="rounded-lg border border-[var(--surface-chip-border)] bg-transparent px-8 py-3 font-semibold">
             Saber Más
           </Button>
         </div>
@@ -65,7 +65,7 @@ export function DigitalHero({
       <div className="relative h-[450px] w-full flex items-center justify-center overflow-hidden lg:overflow-visible">
         {/* Glow effect behind cards */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-64 h-64 bg-blue-600/20 blur-[100px] rounded-full" />
+          <div className="h-64 w-64 rounded-full bg-[var(--surface-chip)] blur-[100px]" />
         </div>
 
         <div className="relative w-full max-w-[340px] h-[400px]">
@@ -85,15 +85,15 @@ export function DigitalHero({
             return (
               <div
                 key={product.id}
-                className={`absolute inset-0 transition-all duration-700 ease-in-out flex flex-col rounded-2xl border border-white/10 overflow-hidden shadow-2xl
+                className={`absolute inset-0 transition-all duration-700 ease-in-out flex flex-col rounded-2xl border border-[var(--border-subtle)] overflow-hidden shadow-2xl
                   ${isCenter ? 'z-20 opacity-100 scale-100 rotate-0 translate-x-0' : ''}
                   ${isLeft ? 'z-10 opacity-40 scale-90 -rotate-6 -translate-x-[25%] blur-[1px]' : ''}
                   ${isRight ? 'z-10 opacity-40 scale-90 rotate-6 translate-x-[25%] blur-[1px]' : ''}
                   ${isHidden ? 'z-0 opacity-0 scale-75 pointer-events-none' : ''}
-                  ${isCenter ? 'bg-slate-900 shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)]' : 'bg-[#0f172a]'}
+                  ${isCenter ? 'bg-[var(--surface-card)] shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)]' : 'bg-[var(--surface-panel)]'}
                 `}
               >
-                <div className="relative flex-1 bg-black">
+                <div className="relative flex-1 bg-[var(--surface-panel-strong)]">
                   {product.image || product.gallery?.[0] ? (
                     <Image
                       src={product.image || product.gallery?.[0] || ''}
@@ -106,24 +106,24 @@ export function DigitalHero({
                   
                   {isCenter && (
                     <div className="absolute top-3 right-3 z-30">
-                      <span className="rounded bg-blue-600 px-2 py-1 text-[10px] font-bold text-white uppercase tracking-wider">
+                      <span className="rounded bg-[var(--accent-primary)] px-2 py-1 text-[10px] font-bold text-[var(--text-on-accent)] uppercase tracking-wider">
                         Destacado
                       </span>
                     </div>
                   )}
                   
-                  <div className={`absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent ${isCenter ? 'opacity-90' : 'opacity-100'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-t from-[var(--surface-panel)] to-transparent ${isCenter ? 'opacity-90' : 'opacity-100'}`} />
                 </div>
 
                 {/* Card content - only meaningful when in center, but visible for transition */}
-                <div className="relative z-20 bg-[#0f172a] p-5 pb-6">
-                  <h3 className="text-xl font-bold text-white mb-1 truncate">
+                <div className="relative z-20 bg-[var(--surface-panel)] p-5 pb-6">
+                  <h3 className="mb-1 truncate text-xl font-bold text-[var(--text-primary)]">
                     {product.name}
                   </h3>
-                  <p className="text-lg font-semibold text-blue-400 mb-3">
-                    ${product.price.toFixed(2)} / mes
+                  <p className="mb-3 text-lg font-semibold text-[var(--accent-primary)]">
+                    ${product.price % 1 === 0 ? product.price : product.price.toFixed(2)}
                   </p>
-                  <p className="text-xs text-slate-400 line-clamp-2 h-8">
+                  <p className="h-8 line-clamp-2 text-xs text-[var(--text-muted)]">
                     {product.description || "Acceso anticipado, recompensas exclusivas y multijugador online sin límites."}
                   </p>
                 </div>
@@ -139,7 +139,7 @@ export function DigitalHero({
               key={idx}
               onClick={() => setActiveIndex(idx)}
               className={`h-1.5 rounded-full transition-all ${
-                idx === safeActiveIndex ? "w-6 bg-blue-500" : "w-1.5 bg-white/20"
+                idx === safeActiveIndex ? "w-6 bg-[var(--accent-primary)]" : "w-1.5 bg-[var(--border-strong)]"
               }`}
             />
           ))}

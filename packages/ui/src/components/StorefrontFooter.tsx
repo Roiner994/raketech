@@ -22,14 +22,14 @@ export function StorefrontFooter({
   whatsappLabel = 'Hablar por WhatsApp',
 }: StorefrontFooterProps) {
   return (
-    <footer className="border-t border-[var(--border-subtle)] bg-[rgba(7,17,31,0.45)]">
+    <footer className="border-t border-[var(--border-subtle)] bg-[var(--footer-bg)]">
       <div className="mx-auto grid max-w-[1640px] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.25fr_0.75fr_0.75fr] lg:px-8">
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[rgba(96,165,250,0.18)] bg-[linear-gradient(180deg,#13233a_0%,#0c1727_100%)] shadow-[0_10px_24px_rgba(0,0,0,0.2)]">
-              <span className="text-sm font-black text-white">R</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--surface-chip-border)] bg-[var(--brand-mark-bg)] shadow-[var(--shadow-soft)]">
+              <span className="text-sm font-black text-[var(--text-primary)]">R</span>
             </div>
-            <span className="text-lg font-black text-white">{storeName}</span>
+            <span className="text-lg font-black text-[var(--text-primary)]">{storeName}</span>
           </div>
 
           <p className="max-w-xl text-sm leading-7 text-[var(--text-muted)]">
@@ -49,7 +49,7 @@ export function StorefrontFooter({
 
         {columns.map((column) => (
           <div key={column.title} className="space-y-3">
-            <h4 className="text-xs font-black uppercase tracking-[0.12em] text-white/88">
+            <h4 className="text-xs font-black uppercase tracking-[0.12em] text-[var(--text-primary)]">
               {column.title}
             </h4>
             <ul className="space-y-2.5">
@@ -57,7 +57,7 @@ export function StorefrontFooter({
                 <li key={`${column.title}-${link.label}`}>
                   <a
                     href={link.href}
-                    className="text-xs text-[var(--text-muted)] transition hover:text-white"
+                    className="text-xs text-[var(--text-muted)] transition hover:text-[var(--text-primary)]"
                   >
                     {link.label}
                   </a>

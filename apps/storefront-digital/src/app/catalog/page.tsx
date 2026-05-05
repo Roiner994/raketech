@@ -5,6 +5,7 @@ import {
   CartDrawer,
   StorefrontFooter,
   StorefrontHeader,
+  StorefrontThemeLoadingShell,
   StorefrontProductGrid,
   ToastList,
   useCart,
@@ -75,6 +76,15 @@ export default function DigitalCatalogPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <StorefrontThemeLoadingShell
+        title="Cargando catálogo digital"
+        description="Preparando todas las suscripciones y el tema correcto."
+      />
+    );
+  }
+
   return (
     <>
       <CartDrawer
@@ -97,19 +107,13 @@ export default function DigitalCatalogPage() {
         />
 
         <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
-          {isLoading ? (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
-            </div>
-          ) : (
-            <StorefrontProductGrid
-              title="Todas las Suscripciones"
-              subtitle="Explora nuestro catálogo completo de suscripciones digitales."
-              products={digitalProducts}
-              onAddToCart={handleAdd}
-              onViewDetail={(p) => router.push(`/product/${p.id}`)}
-            />
-          )}
+          <StorefrontProductGrid
+            title="Todas las Suscripciones"
+            subtitle="Explora nuestro catálogo completo de suscripciones digitales."
+            products={digitalProducts}
+            onAddToCart={handleAdd}
+            onViewDetail={(p) => router.push(`/product/${p.id}`)}
+          />
         </div>
 
         <StorefrontFooter

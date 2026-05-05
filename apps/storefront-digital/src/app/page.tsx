@@ -5,6 +5,7 @@ import {
   CartDrawer,
   StorefrontFooter,
   StorefrontHeader,
+  StorefrontThemeLoadingShell,
   ToastList,
   useCart,
   useToast,
@@ -85,6 +86,15 @@ export default function DigitalStorefrontPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <StorefrontThemeLoadingShell
+        title="Cargando Raketech Digital"
+        description="Preparando suscripciones, destacados y carrito."
+      />
+    );
+  }
+
   return (
     <>
       <CartDrawer
@@ -117,21 +127,15 @@ export default function DigitalStorefrontPage() {
           </section>
 
           <section id="subscriptions" className="pt-12">
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
-              </div>
-            ) : (
-              <DigitalProductGrid
-                title="Juegos Populares"
-                subtitle="Las suscripciones más elegidas por la comunidad"
-                viewAllLabel="Explorar todo el catálogo"
-                viewAllHref="/catalog"
-                products={digitalProducts}
-                onAddToCart={handleAdd}
-                onViewDetail={(p) => router.push(`/product/${p.id}`)}
-              />
-            )}
+            <DigitalProductGrid
+              title="Juegos Populares"
+              subtitle="Las suscripciones más elegidas por la comunidad"
+              viewAllLabel="Explorar todo el catálogo"
+              viewAllHref="/catalog"
+              products={digitalProducts}
+              onAddToCart={handleAdd}
+              onViewDetail={(p) => router.push(`/product/${p.id}`)}
+            />
           </section>
         </div>
 

@@ -13,7 +13,6 @@ const popularProducts = [
   {
     name: "Xbox Game Pass",
     price: "$9.99",
-    period: "/ mes",
     image: "/images/xbox_game_pass.png",
     tag: "OFERTA",
     tagStyle: "bg-emerald-400/90 text-black",
@@ -21,7 +20,6 @@ const popularProducts = [
   {
     name: "PlayStation Plus",
     price: "$14.99",
-    period: "/ mes",
     image: "/images/ps_plus.png",
     tag: "TOP",
     tagStyle: "bg-sky-500/90 text-white",
@@ -29,7 +27,6 @@ const popularProducts = [
   {
     name: "EA Play",
     price: "$4.99",
-    period: "/ mes",
     image: "/images/headphone_stand.png",
     tag: "NUEVO",
     tagStyle: "bg-white/90 text-black",
@@ -37,7 +34,6 @@ const popularProducts = [
   {
     name: "Nintendo Switch Online",
     price: "$19.99",
-    period: "/ año",
     image: "/images/switch_dock.png",
     tag: "POPULAR",
     tagStyle: "bg-fuchsia-500/90 text-white",
@@ -195,10 +191,7 @@ export default function Home() {
                       Suscripción Premium
                     </h2>
                     <p className="mt-2 text-2xl font-semibold text-[#60a5fa]">
-                      $12.99{" "}
-                      <span className="text-lg font-medium text-white/55">
-                        / mes
-                      </span>
+                      $12.99
                     </p>
                   </div>
                   <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80">
@@ -279,10 +272,7 @@ export default function Home() {
                       {product.name}
                     </h3>
                     <p className="mt-2 text-lg font-medium text-[#60a5fa]">
-                      {product.price}{" "}
-                      <span className="text-sm text-white/55">
-                        {product.period}
-                      </span>
+                      {product.price}
                     </p>
                   </div>
 

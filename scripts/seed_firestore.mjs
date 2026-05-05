@@ -65,6 +65,17 @@ async function seed() {
     await setDoc(doc(db, "products", id), data);
     console.log(`Seeded ${id}`);
   }
+
+  await setDoc(doc(db, "storefrontSettings", "digital"), {
+    theme: "dark",
+  });
+  console.log("Seeded storefrontSettings/digital");
+
+  await setDoc(doc(db, "storefrontSettings", "physical"), {
+    theme: "dark",
+  });
+  console.log("Seeded storefrontSettings/physical");
+
   console.log("Seeding complete!");
   process.exit(0);
 }

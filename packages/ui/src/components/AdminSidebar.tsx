@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { LayoutDashboard, Gamepad2, Printer, LogOut, X } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Printer, LogOut, X, SlidersHorizontal } from 'lucide-react';
 
 export interface SidebarLink {
   label: string;
   href: string;
-  icon: 'dashboard' | 'games' | 'print';
+  icon: 'dashboard' | 'games' | 'print' | 'settings';
   active?: boolean;
 }
 
@@ -14,6 +14,7 @@ const ICON_MAP = {
   dashboard: LayoutDashboard,
   games: Gamepad2,
   print: Printer,
+  settings: SlidersHorizontal,
 };
 
 interface AdminSidebarProps {

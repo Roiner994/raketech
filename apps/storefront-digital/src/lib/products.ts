@@ -13,7 +13,7 @@ export const DIGITAL_PRODUCTS: ProductDetail[] = [
     price: 3.99,
     image: "/images/xbox_game_pass.png",
     imageAlt: "Tarjeta Xbox Game Pass",
-    imageBg: "bg-[#1A2E1A]",
+    imageBg: "bg-[var(--surface-muted)]",
     category: "Suscripciones",
     description: "Accede a cientos de juegos de alta calidad en consola, PC y la nube. Incluye EA Play y todos los beneficios de Xbox Live Gold.",
     features: [
@@ -29,7 +29,7 @@ export const DIGITAL_PRODUCTS: ProductDetail[] = [
     price: 15.5,
     image: "/images/ps_plus.png",
     imageAlt: "Tarjeta PlayStation Plus",
-    imageBg: "bg-[#0A2E7A]",
+    imageBg: "bg-[var(--surface-muted)]",
     category: "Suscripciones",
     description: "La membresía definitiva de PlayStation. Incluye catálogo de juegos, clásicos, pruebas de juegos y multijugador online.",
     features: [
@@ -45,7 +45,7 @@ export const DIGITAL_PRODUCTS: ProductDetail[] = [
     price: 2.99,
     image: "/images/apple_icloud.png",
     imageAlt: "Tarjeta Apple iCloud Plus",
-    imageBg: "bg-[#1C1C1E]",
+    imageBg: "bg-[var(--surface-muted)]",
     category: "Almacenamiento",
     description: "Aumenta el almacenamiento de tu iPhone, iPad o Mac. Incluye Relay privado de iCloud, Ocultar mi correo y soporte para Video seguro de HomeKit.",
     features: [
@@ -61,7 +61,7 @@ export const DIGITAL_PRODUCTS: ProductDetail[] = [
     price: 4.99,
     image: "/images/spotify_premium.png",
     imageAlt: "Spotify Premium",
-    imageBg: "bg-[#0D2A1A]",
+    imageBg: "bg-[var(--surface-muted)]",
     category: "Streaming",
     description: "Música sin anuncios, en modo offline y con calidad de sonido superior. El plan Premium Individual para tu cuenta personal.",
     features: [
@@ -91,7 +91,7 @@ export function mapDigitalFirestoreProduct(
     price: typeof data.price === "number" ? data.price : 0,
     image: imageUrl || "/images/placeholder.png",
     imageAlt: typeof data.title === "string" ? data.title : "Producto",
-    imageBg: "bg-slate-800",
+    imageBg: "bg-[var(--surface-muted)]",
     featured: data.featured === true,
     category: typeof data.category === "string" && data.category.length > 0 ? data.category : "General",
     description: typeof data.description === "string" ? data.description : "",

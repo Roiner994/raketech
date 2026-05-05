@@ -116,10 +116,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           <div>
             {originalPrice && (
               <p className="text-xs text-slate-500 line-through mb-0.5">
-                ${originalPrice.toFixed(2)}
+                ${originalPrice % 1 === 0 ? originalPrice : originalPrice.toFixed(2)}
               </p>
             )}
-            <p className="text-xl font-bold text-white">${price.toFixed(2)}</p>
+            <p className="text-xl font-bold text-white">${price % 1 === 0 ? price : price.toFixed(2)}</p>
           </div>
           <button
             onClick={() => !isOutOfStock && onAddToCart?.(product)}

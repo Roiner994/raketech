@@ -29,6 +29,8 @@ export { StorefrontShowcaseCard } from './components/StorefrontShowcaseCard';
 export type { StorefrontShowcaseCardProps } from './components/StorefrontShowcaseCard';
 export { StorefrontProductGrid } from './components/StorefrontProductGrid';
 export type { StorefrontProductGridProps, StorefrontGridProduct } from './components/StorefrontProductGrid';
+export { StorefrontThemeBootstrap } from './components/StorefrontThemeBootstrap';
+export { StorefrontThemeLoadingShell } from './components/StorefrontThemeLoadingShell';
 export { ProductDetailModal } from './components/ProductDetailModal';
 export type { ProductDetailModalProps, ProductDetail } from './components/ProductDetailModal';
 export { ProductDetailView } from './components/ProductDetailView';
@@ -61,3 +63,12 @@ export type { CartItem, UseCartReturn } from './hooks/useCart';
 // ─── Toast Hooks ─────────────────────────────────────────────────────────────
 export { useToast } from './hooks/useToast';
 export type { Toast, ToastVariant, UseToastReturn } from './hooks/useToast';
+
+// ─── Storefront Theme ────────────────────────────────────────────────────────
+export {
+  DEFAULT_STOREFRONT_THEME,
+  STOREFRONT_SETTINGS_COLLECTION,
+  isStorefrontTheme,
+  resolveStorefrontTheme,
+} from './lib/storefrontTheme';
+export type { StorefrontId, StorefrontTheme } from './lib/storefrontTheme';

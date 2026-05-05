@@ -29,16 +29,16 @@ export function DigitalProductGrid({
       {/* Section header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white leading-tight">{title}</h2>
+          <h2 className="text-2xl font-bold text-[var(--text-primary)] leading-tight">{title}</h2>
           {subtitle && (
-            <p className="mt-1 text-sm text-slate-400">{subtitle}</p>
+            <p className="mt-1 text-sm text-[var(--text-secondary)]">{subtitle}</p>
           )}
         </div>
 
         {viewAllHref && (
           <a
             href={viewAllHref}
-            className="flex shrink-0 items-center gap-2 rounded-md border border-[#2d2a45] px-4 py-2 text-xs font-medium text-slate-300 transition-colors hover:bg-white/5"
+            className="flex shrink-0 items-center gap-2 rounded-md border border-[var(--border-subtle)] px-4 py-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-soft)]"
           >
             {viewAllLabel}
             <ArrowRight className="h-4 w-4" />
@@ -74,15 +74,15 @@ function DigitalProductCard({
 
   return (
     <article
-      className={`group flex flex-col overflow-hidden rounded-xl bg-[#0e111a] border ${
-        featured ? 'border-green-500/30' : 'border-[#1f2230]'
+      className={`group flex flex-col overflow-hidden rounded-xl border bg-[var(--surface-card-alt)] ${
+        featured ? 'border-green-500/30' : 'border-[var(--border-subtle)]'
       }`}
     >
       {/* Thumbnail */}
       <button
         onClick={onView}
         disabled={!onView}
-        className={`relative aspect-[16/9] w-full overflow-hidden bg-[#111827] ${
+        className={`relative aspect-[16/9] w-full overflow-hidden bg-[var(--surface-muted)] ${
           onView ? 'cursor-pointer' : 'cursor-default'
         }`}
         aria-label={`Ver detalle de ${name}`}
@@ -96,11 +96,11 @@ function DigitalProductCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e111a] to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-card-alt)] to-transparent opacity-80" />
 
         {featured && (
           <div className="absolute top-2 right-2 z-10">
-            <span className="rounded bg-[#22c55e] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+            <span className="rounded bg-[var(--accent-success)] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
               Oferta
             </span>
           </div>
@@ -113,9 +113,9 @@ function DigitalProductCard({
 
       {/* Info + action */}
       <div className="flex flex-col p-4 pt-2">
-        <h3 className="text-base font-bold text-white line-clamp-1 mb-1">{name}</h3>
-        <p className="text-sm font-semibold text-blue-400 mb-4">
-          ${price.toFixed(2)} / mes
+        <h3 className="mb-1 line-clamp-1 text-base font-bold text-[var(--text-primary)]">{name}</h3>
+        <p className="mb-4 text-sm font-semibold text-[var(--accent-primary)]">
+          ${price % 1 === 0 ? price : price.toFixed(2)}
         </p>
 
         <button
@@ -123,7 +123,7 @@ function DigitalProductCard({
             e.stopPropagation();
             onAdd();
           }}
-          className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-[#2d2a45] bg-[#1a1b26] py-2.5 text-xs font-medium text-slate-300 transition-colors hover:bg-[#2d2a45] hover:text-white"
+          className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-interactive)] py-2.5 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-interactive-hover)] hover:text-[var(--text-primary)]"
         >
           <ShoppingCart className="h-4 w-4" />
           Añadir al carrito

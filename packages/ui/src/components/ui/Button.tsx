@@ -20,15 +20,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-slate-950 font-semibold shadow-lg shadow-[rgba(96,165,250,0.22)] active:scale-[0.98]',
+    'bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-[var(--text-on-accent)] font-semibold shadow-lg shadow-[rgba(96,165,250,0.22)] active:scale-[0.98]',
   secondary:
-    'bg-white/6 hover:bg-white/10 text-[var(--text-primary)] font-medium border border-[var(--border-subtle)] shadow-lg shadow-black/10 active:scale-95',
+    'bg-[var(--surface-glass)] hover:bg-[var(--surface-glass-strong)] text-[var(--text-primary)] font-medium border border-[var(--border-subtle)] shadow-lg shadow-black/10 active:scale-95',
   ghost:
-    'bg-transparent hover:bg-white/6 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] active:scale-95',
+    'bg-transparent hover:bg-[var(--surface-glass)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] active:scale-95',
   danger:
     'bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/20 active:scale-95',
   whatsapp:
-    'bg-[var(--accent-success)] hover:brightness-110 text-slate-950 font-semibold shadow-lg shadow-[rgba(34,197,94,0.18)] active:scale-95',
+    'bg-[var(--accent-success)] hover:brightness-110 text-[var(--text-on-accent)] font-semibold shadow-lg shadow-[rgba(34,197,94,0.18)] active:scale-95',
   green:
     'bg-[rgba(96,165,250,0.12)] hover:bg-[rgba(96,165,250,0.18)] text-[var(--accent-primary)] border border-[rgba(96,165,250,0.2)] active:scale-95',
 };

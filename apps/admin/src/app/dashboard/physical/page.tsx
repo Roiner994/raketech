@@ -112,13 +112,21 @@ export default function PhysicalDashboardPage() {
             Gestiona tu inventario de productos físicos
           </p>
         </div>
-        <button
-          onClick={() => router.push("/dashboard/products/physical/new")}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-200 text-slate-900 text-sm font-bold rounded-xl transition-all active:scale-95"
-        >
-          <Plus className="w-4 h-4" />
-          Nuevo Producto Físico
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => router.push("/dashboard/settings")}
+            className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm font-bold text-slate-200 transition-all hover:bg-slate-800 hover:text-white"
+          >
+            Configuración
+          </button>
+          <button
+            onClick={() => router.push("/dashboard/products/physical/new")}
+            className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-200 text-slate-900 text-sm font-bold rounded-xl transition-all active:scale-95"
+          >
+            <Plus className="w-4 h-4" />
+            Nuevo Producto Físico
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -132,7 +140,7 @@ export default function PhysicalDashboardPage() {
         />
         <StatsCard
           label="Valor en Inventario"
-          value={`$${stats.totalValue.toFixed(2)}`}
+          value={`$${stats.totalValue % 1 === 0 ? stats.totalValue : stats.totalValue.toFixed(2)}`}
           icon={<Users className="w-4 h-4" />}
         />
       </div>

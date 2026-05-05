@@ -7,6 +7,7 @@ import {
   StorefrontFeaturedCarousel,
   StorefrontHeader,
   StorefrontProductGrid,
+  StorefrontThemeLoadingShell,
   ToastList,
   useCart,
   useToast,
@@ -71,6 +72,15 @@ export default function PhysicalStorefrontPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <StorefrontThemeLoadingShell
+        title="Cargando Raketech 3D"
+        description="Preparando accesorios, destacados y el tema correcto."
+      />
+    );
+  }
+
   return (
     <>
       <CartDrawer
@@ -105,21 +115,15 @@ export default function PhysicalStorefrontPage() {
           </section>
 
           <section id="products" className="pt-12">
-            {isLoading ? (
-              <div className="flex justify-center py-12">
-                <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
-              </div>
-            ) : (
-              <StorefrontProductGrid
-                title="Accesorios 3D"
-                subtitle="Diseños exclusivos, máxima resistencia para tu setup."
-                viewAllLabel="Ver accesorios"
-                viewAllHref="/catalog"
-                products={physicalProducts}
-                onAddToCart={handleAdd}
-                onViewDetail={(p) => router.push(`/product/${p.id}`)}
-              />
-            )}
+            <StorefrontProductGrid
+              title="Accesorios 3D"
+              subtitle="Diseños exclusivos, máxima resistencia para tu setup."
+              viewAllLabel="Ver accesorios"
+              viewAllHref="/catalog"
+              products={physicalProducts}
+              onAddToCart={handleAdd}
+              onViewDetail={(p) => router.push(`/product/${p.id}`)}
+            />
           </section>
         </div>
 

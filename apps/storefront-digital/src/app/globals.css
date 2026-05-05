@@ -20,6 +20,98 @@
   --text-muted: #7f90aa;
   --border-subtle: rgba(148, 163, 184, 0.18);
   --border-strong: rgba(148, 163, 184, 0.28);
+  --body-background:
+    radial-gradient(circle at top, rgba(96, 165, 250, 0.14), transparent 34%),
+    linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  --header-bg: rgba(7, 17, 31, 0.82);
+  --footer-bg: rgba(7, 17, 31, 0.45);
+  --brand-mark-bg: linear-gradient(180deg, #13233a 0%, #0c1727 100%);
+  --surface-glass: rgba(255, 255, 255, 0.05);
+  --surface-glass-strong: rgba(255, 255, 255, 0.08);
+  --surface-panel: #0f172a;
+  --surface-panel-strong: #09111f;
+  --surface-card: #0f172a;
+  --surface-card-alt: #0e111a;
+  --surface-muted: #111827;
+  --surface-interactive: #1a1b26;
+  --surface-interactive-hover: #2d2a45;
+  --surface-soft: rgba(255, 255, 255, 0.04);
+  --surface-soft-hover: rgba(255, 255, 255, 0.08);
+  --surface-overlay: rgba(2, 6, 23, 0.72);
+  --surface-overlay-soft: rgba(0, 0, 0, 0.4);
+  --surface-overlay-strong: rgba(0, 0, 0, 0.6);
+  --surface-drawer: #1e293b;
+  --surface-drawer-header: rgba(11, 17, 32, 0.5);
+  --surface-drawer-item: #0b1120;
+  --surface-chip: rgba(96, 165, 250, 0.12);
+  --surface-chip-border: rgba(96, 165, 250, 0.18);
+  --surface-hero-banner: linear-gradient(135deg, #09111f 0%, #0f172a 55%, #111827 100%);
+  --surface-hero-panel: linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(2, 6, 23, 0.96));
+  --surface-hero-image-fallback: radial-gradient(circle at top, rgba(59, 130, 246, 0.28), transparent 35%), linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  --surface-detail-card: #1e293b;
+  --surface-back-button: rgba(255, 255, 255, 0.05);
+  --surface-back-button-hover: rgba(255, 255, 255, 0.1);
+  --text-on-accent: #eff6ff;
+  --shadow-soft: 0 20px 50px -30px rgba(2, 6, 23, 0.7);
+  --shadow-strong: 0 24px 60px -32px rgba(0, 0, 0, 0.85);
+  --accent-whatsapp: #25d366;
+  --accent-whatsapp-hover: #1ebe5a;
+  --selection-bg: rgba(96, 165, 250, 0.24);
+}
+
+html[data-theme="light"] {
+  --bg-primary: #f4f7fb;
+  --bg-secondary: #e8eef7;
+  --bg-card: #ffffff;
+  --bg-elevated: #f8fbff;
+  --bg-soft: #d9e5f3;
+  --accent-primary: #2563eb;
+  --accent-primary-strong: #1d4ed8;
+  --accent-primary-hover: #3b82f6;
+  --accent-success: #16a34a;
+  --accent-warning: #d97706;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-subtle: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.2);
+  --body-background:
+    radial-gradient(circle at top, rgba(37, 99, 235, 0.09), transparent 32%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 54%, #e7eef8 100%);
+  --header-bg: rgba(248, 251, 255, 0.86);
+  --footer-bg: rgba(255, 255, 255, 0.84);
+  --brand-mark-bg: linear-gradient(180deg, #ffffff 0%, #e7eef8 100%);
+  --surface-glass: rgba(255, 255, 255, 0.72);
+  --surface-glass-strong: rgba(226, 232, 240, 0.92);
+  --surface-panel: #ffffff;
+  --surface-panel-strong: #f8fbff;
+  --surface-card: #ffffff;
+  --surface-card-alt: #f8fbff;
+  --surface-muted: #e9eff7;
+  --surface-interactive: #eff4fb;
+  --surface-interactive-hover: #dde8f7;
+  --surface-soft: rgba(15, 23, 42, 0.04);
+  --surface-soft-hover: rgba(15, 23, 42, 0.08);
+  --surface-overlay: rgba(15, 23, 42, 0.22);
+  --surface-overlay-soft: rgba(15, 23, 42, 0.08);
+  --surface-overlay-strong: rgba(15, 23, 42, 0.22);
+  --surface-drawer: #ffffff;
+  --surface-drawer-header: rgba(244, 247, 251, 0.86);
+  --surface-drawer-item: #f8fbff;
+  --surface-chip: rgba(37, 99, 235, 0.1);
+  --surface-chip-border: rgba(37, 99, 235, 0.18);
+  --surface-hero-banner: linear-gradient(135deg, #ffffff 0%, #f5f9ff 52%, #e9f1fb 100%);
+  --surface-hero-panel: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 246, 255, 0.98));
+  --surface-hero-image-fallback: radial-gradient(circle at top, rgba(59, 130, 246, 0.18), transparent 35%), linear-gradient(180deg, #f8fbff 0%, #e8eef7 100%);
+  --surface-detail-card: #ffffff;
+  --surface-back-button: rgba(15, 23, 42, 0.04);
+  --surface-back-button-hover: rgba(15, 23, 42, 0.08);
+  --text-on-accent: #ffffff;
+  --shadow-soft: 0 20px 50px -32px rgba(37, 99, 235, 0.16);
+  --shadow-strong: 0 24px 60px -36px rgba(15, 23, 42, 0.18);
+  --accent-whatsapp: #16a34a;
+  --accent-whatsapp-hover: #15803d;
+  --selection-bg: rgba(37, 99, 235, 0.18);
 }
 
 html {
@@ -27,16 +119,14 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top, rgba(96, 165, 250, 0.14), transparent 34%),
-    linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  background: var(--body-background);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: rgba(96, 165, 250, 0.24);
+  background: var(--selection-bg);
   color: var(--text-primary);
 }
 

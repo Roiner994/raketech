@@ -144,7 +144,7 @@ export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: Data
                     </Badge>
                   </td>
                   {/* Price */}
-                  <td className="px-4 py-4 text-white font-medium">${product.price.toFixed(2)}</td>
+                  <td className="px-4 py-4 text-white font-medium">${product.price % 1 === 0 ? product.price : product.price.toFixed(2)}</td>
                   {/* Stock */}
                   <td className="px-4 py-4">
                     {product.stock === null ? (

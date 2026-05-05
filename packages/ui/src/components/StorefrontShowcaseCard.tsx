@@ -90,7 +90,7 @@ export function StorefrontShowcaseCard({
             {priceLabel} · {badge}
           </p>
           <p className="text-[2.15rem] font-bold tracking-[-0.04em] text-white">
-            ${price.toFixed(2)}
+            ${price % 1 === 0 ? price : price.toFixed(2)}
           </p>
         </div>
 

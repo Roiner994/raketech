@@ -18,6 +18,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const digitalActive = pathname === "/dashboard/digital" || pathname.startsWith("/dashboard/products/digital");
   const physicalActive = pathname === "/dashboard/physical" || pathname.startsWith("/dashboard/products/physical");
+  const settingsActive = pathname === "/dashboard/settings";
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -53,6 +54,7 @@ export default function DashboardLayout({
         links={[
           { label: "Juegos Digitales", href: "/dashboard/digital", icon: "games", active: digitalActive },
           { label: "Impresiones 3D", href: "/dashboard/physical", icon: "print", active: physicalActive },
+          { label: "Configuración", href: "/dashboard/settings", icon: "settings", active: settingsActive },
         ]}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
