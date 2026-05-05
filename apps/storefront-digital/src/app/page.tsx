@@ -90,7 +90,6 @@ export default function DigitalStorefrontPage() {
     return (
       <StorefrontThemeLoadingShell
         title="Cargando Raketech Digital"
-        description="Preparando suscripciones, destacados y carrito."
       />
     );
   }

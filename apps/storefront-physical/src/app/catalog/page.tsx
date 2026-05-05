@@ -66,7 +66,6 @@ export default function PhysicalCatalogPage() {
     return (
       <StorefrontThemeLoadingShell
         title="Cargando catálogo 3D"
-        description="Preparando todos los accesorios y el tema correcto."
       />
     );
   }

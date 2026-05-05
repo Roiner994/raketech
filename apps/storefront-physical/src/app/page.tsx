@@ -76,7 +76,6 @@ export default function PhysicalStorefrontPage() {
     return (
       <StorefrontThemeLoadingShell
         title="Cargando Raketech 3D"
-        description="Preparando accesorios, destacados y el tema correcto."
       />
     );
   }

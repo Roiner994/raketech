@@ -67,7 +67,6 @@ export default function ProductPage() {
     return (
       <StorefrontThemeLoadingShell
         title="Cargando producto digital"
-        description="Preparando el detalle y el tema correcto."
       />
     );
   }

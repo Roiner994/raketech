@@ -94,7 +94,6 @@ export default function ProductPage() {
           {isLoading ? (
             <StorefrontThemeLoadingShell
               title="Cargando producto 3D"
-              description="Preparando el detalle y el tema correcto."
             />
           ) : !product ? (
             <div className="flex flex-col items-center justify-center py-24">

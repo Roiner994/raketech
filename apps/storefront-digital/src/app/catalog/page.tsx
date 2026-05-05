@@ -80,7 +80,6 @@ export default function DigitalCatalogPage() {
     return (
       <StorefrontThemeLoadingShell
         title="Cargando catálogo digital"
-        description="Preparando todas las suscripciones y el tema correcto."
       />
     );
   }
