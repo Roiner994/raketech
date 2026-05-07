@@ -105,24 +105,17 @@ function ProductGridCard({
 
   return (
     <article
-      className={[
-        'group flex flex-col overflow-hidden rounded-xl transition-all',
-        'bg-[var(--surface-card,#0F172A)]',
-        featured
-          ? 'border-2 border-[var(--accent-primary,#3B82F6)] shadow-lg shadow-[var(--accent-primary,#3B82F6)]/20'
-          : 'border border-[var(--border-subtle)] hover:border-[var(--accent-primary,#3B82F6)]/40',
-      ].join(' ')}
+      className="group relative flex flex-col overflow-hidden rounded-[24px] bg-gradient-to-br from-[var(--surface-card)] to-[var(--surface-card-alt)] transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[var(--accent-primary)]/10 border border-[var(--border-subtle)]"
     >
-      {/* Thumbnail — clicking opens detail view */}
-      <button
+      {/* Thumbnail */}
+      <div
         onClick={onView}
-        disabled={!onView}
         className={[
-          'relative aspect-square w-full overflow-hidden',
+          'relative aspect-square w-full overflow-hidden cursor-pointer',
           imageBg ?? 'bg-[var(--surface-muted)]',
-          onView ? 'cursor-pointer' : 'cursor-default',
         ].join(' ')}
-        aria-label={`Ver detalle de ${name}`}
+        role="button"
+        tabIndex={0}
       >
         {image ? (
           <Image
@@ -130,53 +123,56 @@ function ProductGridCard({
             alt={imageAlt}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-slate-600">
+          <div className="absolute inset-0 flex items-center justify-center text-[var(--text-muted)]">
             {fallbackIcon}
           </div>
         )}
+        
+        {/* Modern Overlay Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-card)] via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" />
 
-        {/* Hover overlay with "Ver detalle" hint */}
+        {/* Hover hint */}
         {onView && (
-          <div className="absolute inset-0 flex items-center justify-center bg-transparent transition-all duration-300 group-hover:bg-[var(--surface-overlay-soft)]">
-            <span className="flex translate-y-2 items-center gap-1.5 rounded-full bg-[var(--bg-card)] px-3 py-1.5 text-xs font-bold text-[var(--text-primary)] opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="flex translate-y-2 items-center gap-1.5 rounded-full bg-[var(--bg-card)] px-3 py-1.5 text-[10px] font-black text-[var(--text-primary)] opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 uppercase tracking-widest">
               <Eye className="h-3 w-3" />
-              Ver detalle
+              Detalle
             </span>
           </div>
         )}
-      </button>
+      </div>
 
-      {/* Info + action */}
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <button
-          onClick={onView}
-          disabled={!onView}
-          className="text-left text-xs font-semibold leading-tight text-[var(--text-primary)] line-clamp-2 transition-colors hover:text-[var(--accent-primary)] disabled:hover:text-[var(--text-primary)]"
-        >
-          {name}
-        </button>
-        <p className="text-sm font-bold text-[var(--text-secondary)]">${price % 1 === 0 ? price : price.toFixed(2)}</p>
+      {/* Info Section */}
+      <div className="flex flex-1 flex-col p-5 pt-2">
+        <div className="mb-4 space-y-1">
+          <button
+            onClick={onView}
+            className="text-left text-base font-black tracking-tight text-[var(--text-primary)] line-clamp-1 transition-colors hover:text-[var(--accent-primary)]"
+          >
+            {name}
+          </button>
+          <div className="flex items-baseline gap-2">
+            <span className="text-xl font-black text-[var(--text-primary)]">
+              ${price % 1 === 0 ? price : price.toFixed(2)}
+            </span>
+            <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
+              USD
+            </span>
+          </div>
+        </div>
 
         <button
-          onClick={onAdd}
-          className={[
-            'mt-auto flex w-full items-center justify-center gap-1 rounded-lg py-3.5',
-            'text-xs font-bold transition-all',
-            featured
-              ? 'bg-[var(--accent-primary,#3B82F6)] text-white hover:brightness-110'
-              : [
-                  'border border-[rgba(255,255,255,0.08)]',
-                  'bg-[var(--surface-soft)]',
-                  'text-[var(--text-secondary)]',
-                  'hover:bg-[var(--accent-primary,#3B82F6)] hover:text-[var(--text-on-accent)] hover:border-transparent',
-                ].join(' '),
-          ].join(' ')}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdd();
+          }}
+          className="mt-auto relative flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[var(--bg-primary)] border border-[var(--border-strong)] text-xs font-black text-white transition-all duration-300 hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] group/btn active:scale-95 shadow-lg"
         >
-          <Plus className="h-3 w-3" />
-          Agregar
+          <Plus className="h-3.5 w-3.5 transition-transform group-hover/btn:rotate-90" />
+          <span>Agregar</span>
         </button>
       </div>
     </article>

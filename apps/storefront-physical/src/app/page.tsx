@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import {
   CartDrawer,
   StorefrontFooter,
-  StorefrontFeaturedCarousel,
   StorefrontHeader,
   StorefrontProductGrid,
   StorefrontThemeLoadingShell,
@@ -52,8 +51,8 @@ export default function PhysicalStorefrontPage() {
     };
     fetchProducts();
   }, []);
-  const featuredProducts = physicalProducts.filter((product) => product.featured).slice(0, 6);
-  const heroProducts = featuredProducts.length > 0 ? featuredProducts : physicalProducts.slice(0, 6);
+  const featuredProducts = physicalProducts.filter((product) => product.featured);
+  const regularProducts = physicalProducts.filter((product) => !product.featured);
 
   const handleAdd = (product: StorefrontGridProduct, quantity: number = 1, variant?: string) => {
     cart.addItem({
@@ -100,30 +99,36 @@ export default function PhysicalStorefrontPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
+          welcomeMessage={{
+            title: "Bienvenidos a Raketech 3D",
+            subtitle: "Diseños Exclusivos para Gamers"
+          }}
         />
 
-        <div className="mx-auto max-w-[1640px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
-          <section id="featured">
-            <StorefrontFeaturedCarousel
-              products={heroProducts}
-              onViewProduct={(product) => router.push(`/product/${product.id}`)}
-              onBrowseCatalog={() => router.push("/catalog")}
-              emptyTitle="Lo mejor de Raketech 3D se mostrará aquí"
-              emptyDescription="Marca productos como destacados desde el panel para convertir ofertas, diseños nuevos o piezas premium en la primera impresión de la tienda."
-            />
-          </section>
+        <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
+          <div id="catalog-section" className="space-y-16 py-6">
+            {featuredProducts.length > 0 && (
+              <section id="featured">
+                <StorefrontProductGrid
+                  title="Selección Destacada"
+                  subtitle="Lo más exclusivo de nuestro taller 3D"
+                  products={featuredProducts}
+                  onAddToCart={handleAdd}
+                  onViewDetail={(p) => router.push(`/product/${p.id}`)}
+                />
+              </section>
+            )}
 
-          <section id="products" className="pt-12">
-            <StorefrontProductGrid
-              title="Accesorios 3D"
-              subtitle="Diseños exclusivos, máxima resistencia para tu setup."
-              viewAllLabel="Ver accesorios"
-              viewAllHref="/catalog"
-              products={physicalProducts}
-              onAddToCart={handleAdd}
-              onViewDetail={(p) => router.push(`/product/${p.id}`)}
-            />
-          </section>
+            <section id="catalog">
+              <StorefrontProductGrid
+                title="Todos los Accesorios"
+                subtitle="Explora nuestra colección completa"
+                products={regularProducts}
+                onAddToCart={handleAdd}
+                onViewDetail={(p) => router.push(`/product/${p.id}`)}
+              />
+            </section>
+          </div>
         </div>
 
         <StorefrontFooter
