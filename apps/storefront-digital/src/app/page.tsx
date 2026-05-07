@@ -10,7 +10,6 @@ import {
   useCart,
   useToast,
 } from "@raketech/ui";
-import { DigitalHero } from "@/components/DigitalHero";
 import { DigitalProductGrid } from "@/components/DigitalProductGrid";
 import { useRouter } from "next/navigation";
 import { DIGITAL_PRODUCTS, NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
@@ -67,8 +66,8 @@ export default function DigitalStorefrontPage() {
       );
     }
   }, []);
-  const featuredProducts = digitalProducts.filter((product) => product.featured).slice(0, 6);
-  const heroProducts = featuredProducts.length > 0 ? featuredProducts : digitalProducts.slice(0, 6);
+  const featuredProducts = digitalProducts.filter((product) => product.featured);
+  const regularProducts = digitalProducts.filter((product) => !product.featured);
 
   const handleAdd = (product: StorefrontGridProduct, quantity: number = 1) => {
     cart.addItem({
@@ -85,6 +84,7 @@ export default function DigitalStorefrontPage() {
       variant: "success",
     });
   };
+
 
   if (isLoading) {
     return (
@@ -114,28 +114,36 @@ export default function DigitalStorefrontPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
+          welcomeMessage={{
+            title: "Bienvenido a Raketech",
+            subtitle: "Suscripciones Digitales Premium"
+          }}
         />
 
-        <div className="mx-auto max-w-[1640px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
-          <section id="featured">
-            <DigitalHero
-              products={heroProducts}
-              onViewProduct={(product) => router.push(`/product/${product.id}`)}
-              onBrowseCatalog={() => router.push("/catalog")}
-            />
-          </section>
+        <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
+          <div id="catalog-section" className="space-y-16 py-6">
+            {featuredProducts.length > 0 && (
+              <section id="featured">
+                <DigitalProductGrid
+                  title="Productos Destacados"
+                  subtitle="Selección premium de lo más buscado"
+                  products={featuredProducts}
+                  onAddToCart={handleAdd}
+                  onViewDetail={(p) => router.push(`/product/${p.id}`)}
+                />
+              </section>
+            )}
 
-          <section id="subscriptions" className="pt-12">
-            <DigitalProductGrid
-              title="Juegos Populares"
-              subtitle="Las suscripciones más elegidas por la comunidad"
-              viewAllLabel="Explorar todo el catálogo"
-              viewAllHref="/catalog"
-              products={digitalProducts}
-              onAddToCart={handleAdd}
-              onViewDetail={(p) => router.push(`/product/${p.id}`)}
-            />
-          </section>
+            <section id="catalog">
+              <DigitalProductGrid
+                title="Catálogo Completo"
+                subtitle="Explora todas nuestras opciones disponibles"
+                products={regularProducts}
+                onAddToCart={handleAdd}
+                onViewDetail={(p) => router.push(`/product/${p.id}`)}
+              />
+            </section>
+          </div>
         </div>
 
         <StorefrontFooter

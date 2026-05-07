@@ -74,18 +74,16 @@ function DigitalProductCard({
 
   return (
     <article
-      className={`group flex flex-col overflow-hidden rounded-xl border bg-[var(--surface-card-alt)] ${
-        featured ? 'border-green-500/30' : 'border-[var(--border-subtle)]'
+      className={`group relative flex flex-col overflow-hidden rounded-[24px] bg-gradient-to-br from-[var(--surface-card)] to-[var(--surface-card-alt)] transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[var(--accent-primary)]/10 border ${
+        featured ? 'border-[var(--accent-primary)]/30' : 'border-[var(--border-subtle)]'
       }`}
     >
-      {/* Thumbnail */}
-      <button
+      {/* Thumbnail with Overlay */}
+      <div
         onClick={onView}
-        disabled={!onView}
-        className={`relative aspect-[16/9] w-full overflow-hidden bg-[var(--surface-muted)] ${
-          onView ? 'cursor-pointer' : 'cursor-default'
-        }`}
-        aria-label={`Ver detalle de ${name}`}
+        className="relative aspect-[4/3] w-full overflow-hidden cursor-pointer"
+        role="button"
+        tabIndex={0}
       >
         {image && (
           <Image
@@ -93,40 +91,40 @@ function DigitalProductCard({
             alt={imageAlt}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-card-alt)] to-transparent opacity-80" />
+        
+        {/* Modern Overlay Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-card)] via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" />
 
-        {featured && (
-          <div className="absolute top-2 right-2 z-10">
-            <span className="rounded bg-[var(--accent-success)] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
-              Oferta
+      </div>
+
+      {/* Info Section */}
+      <div className="flex flex-col p-6 pt-2">
+        <div className="mb-4 space-y-1">
+          <h3 className="line-clamp-1 text-lg font-black tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-primary)]">
+            {name}
+          </h3>
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-black text-[var(--text-primary)]">
+              ${price % 1 === 0 ? price : price.toFixed(2)}
+            </span>
+            <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
+              USD
             </span>
           </div>
-        )}
-
-        <div className="absolute inset-x-0 bottom-4 text-center z-10">
-          {/* Logo could go here, or we just rely on the image */}
         </div>
-      </button>
-
-      {/* Info + action */}
-      <div className="flex flex-col p-4 pt-2">
-        <h3 className="mb-1 line-clamp-1 text-base font-bold text-[var(--text-primary)]">{name}</h3>
-        <p className="mb-4 text-sm font-semibold text-[var(--accent-primary)]">
-          ${price % 1 === 0 ? price : price.toFixed(2)}
-        </p>
 
         <button
           onClick={(e) => {
             e.stopPropagation();
             onAdd();
           }}
-          className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-interactive)] py-2.5 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-interactive-hover)] hover:text-[var(--text-primary)]"
+          className="relative flex h-12 w-full items-center justify-center gap-3 overflow-hidden rounded-xl bg-[var(--bg-primary)] border border-[var(--border-strong)] text-sm font-black text-white transition-all duration-300 hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] group/btn active:scale-95 shadow-lg"
         >
-          <ShoppingCart className="h-4 w-4" />
-          Añadir al carrito
+          <ShoppingCart className="h-4 w-4 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+          <span>Añadir al Carrito</span>
         </button>
       </div>
     </article>
