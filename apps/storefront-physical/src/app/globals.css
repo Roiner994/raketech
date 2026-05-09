@@ -56,6 +56,14 @@
   --accent-whatsapp: #10b981;
   --accent-whatsapp-hover: #059669;
   --selection-bg: rgba(59, 130, 246, 0.3);
+
+  /* Hero design tokens from digital */
+  --hero-surface: linear-gradient(135deg, rgba(2, 9, 24, 0.92) 6%, rgba(3, 14, 34, 0.86) 44%, rgba(4, 20, 34, 0.94) 100%);
+  --hero-frame-border: rgba(96, 165, 250, 0.14);
+  --hero-panel-bg: rgba(4, 13, 30, 0.72);
+  --hero-panel-border: rgba(96, 165, 250, 0.12);
+  --hero-rail-bg: linear-gradient(180deg, rgba(5, 14, 33, 0.84), rgba(4, 11, 27, 0.92));
+  --hero-rail-border: rgba(96, 165, 250, 0.1);
 }
 
 html[data-theme="light"] {
@@ -143,4 +151,94 @@ body {
 
 .animate-slide-in-right {
   animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Custom Animations and Hero Utilities */
+@keyframes hero-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes hero-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.hero-gradient-title {
+  background: linear-gradient(180deg, #81a4ff 0%, #5f92ff 38%, #3174ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 28px rgba(59, 130, 246, 0.12);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(80, 118, 198, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80, 118, 198, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 78%);
+}
+
+.hero-orbit {
+  position: absolute;
+  border: 1px solid rgba(59, 130, 246, 0.16);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.hero-orbit-one {
+  top: -14%;
+  right: -8%;
+  width: 52rem;
+  height: 52rem;
+}
+
+.hero-orbit-two {
+  top: 8%;
+  right: 2%;
+  width: 28rem;
+  height: 28rem;
+  border-color: rgba(34, 197, 94, 0.1);
+}
+
+.hero-flare {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.hero-flare-blue {
+  top: 12%;
+  left: 12%;
+  width: 12rem;
+  height: 12rem;
+  background: rgba(59, 130, 246, 0.18);
+  animation: hero-pulse 6s ease-in-out infinite;
+}
+
+.hero-flare-green {
+  bottom: 8%;
+  right: 10%;
+  width: 11rem;
+  height: 11rem;
+  background: rgba(34, 197, 94, 0.12);
+  animation: hero-pulse 7s ease-in-out infinite;
+}
+
+.hero-scene-frame {
+  border: 1px solid rgba(96, 165, 250, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 30px 60px rgba(1, 8, 24, 0.5);
+  animation: hero-float 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-flare-blue,
+  .hero-flare-green,
+  .hero-scene-frame {
+    animation: none;
+  }
 }

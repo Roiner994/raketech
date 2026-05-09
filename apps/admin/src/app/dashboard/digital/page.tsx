@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { DataTable, ToastList, useToast } from "@raketech/ui";
+import { DataTable, DigitalDashboardHero, ToastList, useToast } from "@raketech/ui";
 import type { TableProduct } from "@raketech/ui";
 import { Plus } from "lucide-react";
 import { collection, getDocs, query, where, doc, deleteDoc, updateDoc } from "firebase/firestore";
@@ -99,28 +99,21 @@ export default function DigitalDashboardPage() {
 
   return (
     <div className="p-6 space-y-8">
-      {/* Page header */}
-      <div className="flex items-center justify-between">
+      {/* Page Hero */}
+      <DigitalDashboardHero
+        totalProducts={products.length}
+        featuredProducts={products.filter((p) => p.featured).length}
+        onCreateProduct={() => router.push("/dashboard/products/digital/new")}
+        onSettingsClick={() => router.push("/dashboard/settings")}
+      />
+
+      {/* Table Section Header */}
+      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Juegos Digitales</h1>
-          <p className="text-sm text-slate-400 mt-0.5">
-            Gestiona tus suscripciones y juegos digitales
+          <h2 className="text-xl font-bold text-white">Listado de Juegos</h2>
+          <p className="text-sm text-slate-400 mt-1">
+            Administración detallada de productos digitales
           </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => router.push("/dashboard/settings")}
-            className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm font-bold text-slate-200 transition-all hover:bg-slate-800 hover:text-white"
-          >
-            Configuración
-          </button>
-          <button
-            onClick={() => router.push("/dashboard/products/digital/new")}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-200 text-slate-900 text-sm font-bold rounded-xl transition-all active:scale-95"
-          >
-            <Plus className="w-4 h-4" />
-            Nuevo Producto Digital
-          </button>
         </div>
       </div>
 

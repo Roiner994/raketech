@@ -14,7 +14,8 @@ interface StorefrontHeaderProps {
   cartTotal?: number;
   onCartClick?: () => void;
   searchLabel?: string;
-  brandMark?: string;
+  brandMark?: React.ReactNode;
+  brandName?: string;
   brandHref?: string;
   welcomeMessage?: {
     title: string;
@@ -28,7 +29,8 @@ export function StorefrontHeader({
   cartTotal = 0,
   onCartClick,
   searchLabel = 'Buscar productos',
-  brandMark = 'R',
+  brandMark,
+  brandName,
   brandHref = '#top',
   welcomeMessage,
 }: StorefrontHeaderProps) {
@@ -37,13 +39,23 @@ export function StorefrontHeader({
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--header-bg)] backdrop-blur-2xl">
       <div className="mx-auto flex max-w-[1640px] items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
           <a
             href={brandHref}
-            className="group relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[18px] bg-[var(--brand-mark-bg)] shadow-xl transition-all duration-300 hover:rotate-3 hover:scale-105 active:scale-95"
+            className="group flex items-center gap-3 transition-transform active:scale-95"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary)]/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            <span className="relative text-xl font-black italic tracking-tighter text-[var(--text-primary)]">{brandMark}</span>
+            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[15px] bg-[var(--brand-mark-bg)] shadow-lg transition-all duration-300 group-hover:rotate-3 group-hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary)]/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              <span className="relative flex items-center justify-center text-xl font-black italic tracking-tighter text-[var(--text-primary)]">
+                {brandMark || <Search className="h-5 w-5 rotate-180 scale-x-[-1] transform text-[var(--accent-primary)]" style={{ filter: 'drop-shadow(0 0 8px var(--accent-primary))' }} />}
+                {/* Defaulting to a stylized icon if none provided, but let's use a real Rocket icon below if needed */}
+              </span>
+            </div>
+            {brandName && (
+              <span className="text-xl font-black tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-primary-hover)]">
+                {brandName}
+              </span>
+            )}
           </a>
           
           {welcomeMessage && (

@@ -11,18 +11,17 @@ import {
   useCart,
   useToast,
 } from "@raketech/ui";
+import { PhysicalHero } from "@/components/PhysicalHero";
 import { useRouter } from "next/navigation";
 import { NAV_LINKS, mapPhysicalFirestoreProduct } from "@/lib/products";
+import { Rocket } from "lucide-react";
+
 import type {
   ProductDetail,
   StorefrontGridProduct,
 } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-
-// ─── Page ────────────────────────────────────────────────────────────────────
-
-// ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function PhysicalStorefrontPage() {
   const router = useRouter();
@@ -74,7 +73,7 @@ export default function PhysicalStorefrontPage() {
   if (isLoading) {
     return (
       <StorefrontThemeLoadingShell
-        title="Cargando Raketech 3D"
+        title="Cargando Raketech"
       />
     );
   }
@@ -89,7 +88,7 @@ export default function PhysicalStorefrontPage() {
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
         whatsappNumber="1234567890"
-        storeName="Raketech 3D"
+        storeName="Raketech"
       />
 
 
@@ -99,19 +98,20 @@ export default function PhysicalStorefrontPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
-          welcomeMessage={{
-            title: "Bienvenidos a Raketech 3D",
-            subtitle: "Diseños Exclusivos para Gamers"
-          }}
+          brandName="Raketech"
+          brandMark={<Rocket className="h-6 w-6 text-[var(--accent-primary)]" />}
         />
 
-        <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
-          <div id="catalog-section" className="space-y-16 py-6">
+        <PhysicalHero />
+
+        <div className="mx-auto max-w-[1640px] px-4 py-6 sm:px-6 lg:px-8">
+          <div id="catalog-section" className="space-y-14 py-4 sm:space-y-16 sm:py-6">
+
             {featuredProducts.length > 0 && (
               <section id="featured">
                 <StorefrontProductGrid
                   title="Selección Destacada"
-                  subtitle="Lo más exclusivo de nuestro taller 3D"
+                  subtitle="Lo más exclusivo de nuestro taller y catálogo gamer"
                   products={featuredProducts}
                   onAddToCart={handleAdd}
                   onViewDetail={(p) => router.push(`/product/${p.id}`)}
@@ -121,8 +121,8 @@ export default function PhysicalStorefrontPage() {
 
             <section id="catalog">
               <StorefrontProductGrid
-                title="Todos los Accesorios"
-                subtitle="Explora nuestra colección completa"
+                title="Todos los Productos"
+                subtitle="Explora nuestra colección completa de piezas 3D y soluciones gaming"
                 products={regularProducts}
                 onAddToCart={handleAdd}
                 onViewDetail={(p) => router.push(`/product/${p.id}`)}

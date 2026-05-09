@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { ArrowRight, ShoppingCart } from 'lucide-react';
+import { ArrowRight, ShoppingCart, Eye } from 'lucide-react';
 import type { StorefrontGridProduct } from '@raketech/ui';
 
 interface DigitalProductGridProps {
@@ -17,37 +17,22 @@ interface DigitalProductGridProps {
 
 export function DigitalProductGrid({
   title,
-  subtitle,
-  viewAllLabel = 'Explorar todo el catálogo',
-  viewAllHref,
   products,
   onAddToCart,
   onViewDetail,
 }: DigitalProductGridProps) {
   return (
-    <section className="space-y-6">
-      {/* Section header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-[var(--text-primary)] leading-tight">{title}</h2>
-          {subtitle && (
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">{subtitle}</p>
-          )}
+    <section className="space-y-7">
+      <div className="flex flex-col gap-2 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="h-[2px] w-6 bg-blue-500 rounded-full" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">
+            {title}
+          </span>
         </div>
-
-        {viewAllHref && (
-          <a
-            href={viewAllHref}
-            className="flex shrink-0 items-center gap-2 rounded-md border border-[var(--border-subtle)] px-4 py-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-soft)]"
-          >
-            {viewAllLabel}
-            <ArrowRight className="h-4 w-4" />
-          </a>
-        )}
       </div>
 
-      {/* Product cards grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <DigitalProductCard
             key={product.id}
@@ -74,14 +59,13 @@ function DigitalProductCard({
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden rounded-[24px] bg-gradient-to-br from-[var(--surface-card)] to-[var(--surface-card-alt)] transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[var(--accent-primary)]/10 border ${
-        featured ? 'border-[var(--accent-primary)]/30' : 'border-[var(--border-subtle)]'
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-[rgba(15,23,42,0.35)] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] ${
+        featured ? 'border-[rgba(96,165,250,0.2)]' : 'border-[rgba(255,255,255,0.06)]'
       }`}
     >
-      {/* Thumbnail with Overlay */}
       <div
         onClick={onView}
-        className="relative aspect-[4/3] w-full overflow-hidden cursor-pointer"
+        className="relative aspect-[4/3] w-full cursor-pointer overflow-hidden"
         role="button"
         tabIndex={0}
       >
@@ -94,38 +78,52 @@ function DigitalProductCard({
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         )}
-        
-        {/* Modern Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-card)] via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,11,26,0.02)_0%,rgba(4,11,26,0.12)_30%,rgba(4,11,26,0.88)_100%)]" />
 
       </div>
 
-      {/* Info Section */}
-      <div className="flex flex-col p-6 pt-2">
-        <div className="mb-4 space-y-1">
-          <h3 className="line-clamp-1 text-lg font-black tracking-tight text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-primary)]">
+      <div className="flex flex-1 flex-col p-4">
+        <div className="mb-4 space-y-1.5">
+          <h3 className="line-clamp-1 text-base font-black tracking-[-0.02em] text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-primary)]">
             {name}
           </h3>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-[var(--text-primary)]">
+          <p className="line-clamp-2 text-[13px] leading-relaxed text-[var(--text-secondary)] opacity-80">
+            {product.description || 'Activa tu compra sin friccion y lleva tu experiencia a otro nivel.'}
+          </p>
+          <div className="flex items-baseline gap-1.5 pt-1">
+            <span className="text-xl font-black text-[var(--text-primary)]">
               ${price % 1 === 0 ? price : price.toFixed(2)}
             </span>
-            <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
+            <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
               USD
             </span>
           </div>
         </div>
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onAdd();
-          }}
-          className="relative flex h-12 w-full items-center justify-center gap-3 overflow-hidden rounded-xl bg-[var(--bg-primary)] border border-[var(--border-strong)] text-sm font-black text-white transition-all duration-300 hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] group/btn active:scale-95 shadow-lg"
-        >
-          <ShoppingCart className="h-4 w-4 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-          <span>Añadir al Carrito</span>
-        </button>
+        <div className="mt-auto flex gap-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onAdd();
+            }}
+            className="relative flex h-9 flex-1 items-center justify-center gap-2 overflow-hidden rounded-xl bg-[rgba(10,20,40,0.6)] border border-[rgba(56,189,248,0.2)] text-[11px] font-black uppercase tracking-[0.05em] text-[#38bdf8] transition-all duration-300 hover:bg-[rgba(56,189,248,0.1)] active:scale-95"
+          >
+            <ShoppingCart className="h-3.5 w-3.5" />
+            <span>Agregar</span>
+          </button>
+          {onView && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onView();
+              }}
+              className="flex h-9 w-10 items-center justify-center rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-[var(--text-secondary)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white"
+              title="Ver detalle"
+            >
+              <Eye className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </div>
     </article>
   );

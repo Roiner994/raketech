@@ -11,6 +11,7 @@ import {
   useToast,
 } from "@raketech/ui";
 import { DigitalProductGrid } from "@/components/DigitalProductGrid";
+import { DigitalHero } from "@/components/DigitalHero";
 import { useRouter } from "next/navigation";
 import { DIGITAL_PRODUCTS, NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
 import type {
@@ -108,25 +109,27 @@ export default function DigitalStorefrontPage() {
       />
 
 
-      <main id="top" className="min-h-screen">
+      <main id="top" className="min-h-screen bg-[#020617]">
         <StorefrontHeader
           links={NAV_LINKS}
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
           welcomeMessage={{
-            title: "Bienvenido a Raketech",
-            subtitle: "Suscripciones Digitales Premium"
+            title: "Raketech Digital",
+            subtitle: "Suscripciones, recargas y gaming"
           }}
         />
 
+        <DigitalHero />
+
         <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
-          <div id="catalog-section" className="space-y-16 py-6">
+          <div id="catalog-section" className="space-y-14 sm:space-y-16">
+
             {featuredProducts.length > 0 && (
               <section id="featured">
                 <DigitalProductGrid
-                  title="Productos Destacados"
-                  subtitle="Selección premium de lo más buscado"
+                  title="Destacados"
                   products={featuredProducts}
                   onAddToCart={handleAdd}
                   onViewDetail={(p) => router.push(`/product/${p.id}`)}
@@ -136,8 +139,7 @@ export default function DigitalStorefrontPage() {
 
             <section id="catalog">
               <DigitalProductGrid
-                title="Catálogo Completo"
-                subtitle="Explora todas nuestras opciones disponibles"
+                title="Catalogo"
                 products={regularProducts}
                 onAddToCart={handleAdd}
                 onViewDetail={(p) => router.push(`/product/${p.id}`)}
@@ -148,7 +150,7 @@ export default function DigitalStorefrontPage() {
 
         <StorefrontFooter
           storeName="Raketech Digital"
-          description="Suscripciones digitales premium, códigos originales y accesorios para elevar tu setup con entregas rápidas y soporte cercano."
+          description="Suscripciones digitales, codigos originales y activaciones para elevar tu setup con una experiencia rapida, confiable y con personalidad."
           whatsappNumber="1234567890"
           columns={[
             {

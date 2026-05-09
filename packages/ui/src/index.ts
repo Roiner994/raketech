@@ -46,6 +46,7 @@ export { AdminSidebar } from './components/AdminSidebar';
 export type { SidebarLink } from './components/AdminSidebar';
 
 export { StatsCard } from './components/StatsCard';
+export { DigitalDashboardHero } from './components/DigitalDashboardHero';
 export { DataTable } from './components/DataTable';
 export type { TableProduct } from './components/DataTable';
 
