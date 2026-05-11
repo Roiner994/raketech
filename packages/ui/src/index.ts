@@ -36,7 +36,7 @@ export type { ProductDetailModalProps, ProductDetail } from './components/Produc
 export { ProductDetailView } from './components/ProductDetailView';
 export type { ProductDetailViewProps } from './components/ProductDetailView';
 export { StorefrontFooter } from './components/StorefrontFooter';
-export type { StorefrontFooterColumn } from './components/StorefrontFooter';
+export type { StorefrontFooterColumn, SocialLink } from './components/StorefrontFooter';
 
 export { CartDrawer } from './components/CartDrawer';
 export { Footer } from './components/Footer';

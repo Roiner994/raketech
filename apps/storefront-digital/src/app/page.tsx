@@ -12,6 +12,7 @@ import {
 } from "@raketech/ui";
 import { DigitalProductGrid } from "@/components/DigitalProductGrid";
 import { DigitalHero } from "@/components/DigitalHero";
+import { DigitalProductModal } from "@/components/DigitalProductModal";
 import { useRouter } from "next/navigation";
 import { DIGITAL_PRODUCTS, NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
 import type {
@@ -32,6 +33,8 @@ export default function DigitalStorefrontPage() {
     () => (!db ? DIGITAL_PRODUCTS : [])
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<ProductDetail | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cart = useCart();
   const toast = useToast();
 
@@ -86,6 +89,11 @@ export default function DigitalStorefrontPage() {
     });
   };
 
+  const handleViewDetail = (product: StorefrontGridProduct) => {
+    setSelectedProduct(product as ProductDetail);
+    setIsModalOpen(true);
+  };
+
 
   if (isLoading) {
     return (
@@ -104,7 +112,7 @@ export default function DigitalStorefrontPage() {
         onRemove={cart.removeItem}
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
-        whatsappNumber="1234567890"
+        whatsappNumber="584227180378"
         storeName="Raketech Digital"
       />
 
@@ -132,7 +140,7 @@ export default function DigitalStorefrontPage() {
                   title="Destacados"
                   products={featuredProducts}
                   onAddToCart={handleAdd}
-                  onViewDetail={(p) => router.push(`/product/${p.id}`)}
+                  onViewDetail={handleViewDetail}
                 />
               </section>
             )}
@@ -142,7 +150,7 @@ export default function DigitalStorefrontPage() {
                 title="Catalogo"
                 products={regularProducts}
                 onAddToCart={handleAdd}
-                onViewDetail={(p) => router.push(`/product/${p.id}`)}
+                onViewDetail={handleViewDetail}
               />
             </section>
           </div>
@@ -150,15 +158,20 @@ export default function DigitalStorefrontPage() {
 
         <StorefrontFooter
           storeName="Raketech Digital"
-          description="Suscripciones digitales, codigos originales y activaciones para elevar tu setup con una experiencia rapida, confiable y con personalidad."
-          whatsappNumber="1234567890"
+          description="Suscripciones digitales, códigos originales y activaciones para elevar tu setup con una experiencia rápida, confiable y con personalidad propia."
+          whatsappNumber="584227180378"
+          socialLinks={[
+            { platform: 'instagram', href: 'https://www.instagram.com/raketech.ve' },
+            { platform: 'facebook', href: 'https://www.facebook.com/Raketech.ve' },
+            { platform: 'tiktok', href: 'https://www.tiktok.com/@raketech' }
+          ]}
           columns={[
             {
               title: "Catálogo",
               links: [
-                { label: "Xbox Game Pass", href: "#" },
-                { label: "PlayStation Plus", href: "#" },
-                { label: "Apple iCloud+", href: "#" },
+                { label: "Xbox Game Pass", href: "#catalog" },
+                { label: "PlayStation Plus", href: "#catalog" },
+                { label: "Nintendo Online", href: "#catalog" },
               ],
             },
             {
@@ -172,6 +185,16 @@ export default function DigitalStorefrontPage() {
           ]}
         />
       </main>
+
+      <DigitalProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        product={selectedProduct}
+        onAddToCart={(p, q) => {
+          handleAdd(p, q);
+          setIsModalOpen(false);
+        }}
+      />
 
       <ToastList toasts={toast.toasts} onDismiss={toast.dismissToast} />
     </>

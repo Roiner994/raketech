@@ -93,7 +93,7 @@ export default function DigitalCatalogPage() {
         onRemove={cart.removeItem}
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
-        whatsappNumber="1234567890"
+        whatsappNumber="584227180378"
         storeName="Raketech Digital"
       />
 
@@ -118,7 +118,7 @@ export default function DigitalCatalogPage() {
         <StorefrontFooter
           storeName="Raketech Digital"
           description="Suscripciones digitales premium, códigos originales y accesorios para elevar tu setup con entregas rápidas y soporte cercano."
-          whatsappNumber="1234567890"
+          whatsappNumber="584227180378"
           columns={[
             {
               title: "Catálogo",
