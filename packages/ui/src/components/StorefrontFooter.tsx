@@ -18,14 +18,17 @@ interface StorefrontFooterProps {
   whatsappNumber: string;
   whatsappLabel?: string;
   socialLinks?: SocialLink[];
+  brandMark?: React.ReactNode;
+  brandHref?: string;
+  subtitle?: string;
 }
 
 const SocialIcon = ({ platform }: { platform: SocialLink['platform'] }) => {
-  const iconProps = {
+  const iconProps: React.SVGProps<SVGSVGElement> = {
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: "2",
+    strokeWidth: 2,
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: "h-5 w-5"
@@ -64,25 +67,34 @@ export function StorefrontFooter({
   whatsappNumber,
   whatsappLabel = 'Hablar por WhatsApp',
   socialLinks = [],
+  brandMark,
+  brandHref = '#top',
+  subtitle = 'Digital Excellence',
 }: StorefrontFooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/5 bg-[#020617] pt-20 pb-10">
+    <footer id="footer" className="border-t border-white/5 bg-[#020617] pt-20 pb-10">
       <div className="mx-auto max-w-[1640px] px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-16">
           {/* Brand Column */}
           <div className="space-y-10">
             <div className="space-y-6">
-              <div className="flex items-center gap-5 group cursor-pointer">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-blue-500/30 group-hover:bg-blue-500/5">
-                  <span className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">R</span>
+              <a href={brandHref} className="flex items-center gap-5 group cursor-pointer">
+                <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-blue-500/30 group-hover:bg-blue-500/5">
+                  {brandMark ? (
+                    <div className="h-full w-full relative">
+                       {brandMark}
+                    </div>
+                  ) : (
+                    <span className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors">R</span>
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-2xl font-black tracking-tight text-white">{storeName}</span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500/80">Digital Excellence</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500/80">{subtitle}</span>
                 </div>
-              </div>
+              </a>
 
               <p className="max-w-md text-[15px] leading-relaxed text-slate-400/90 font-medium">
                 {description}
@@ -94,7 +106,12 @@ export function StorefrontFooter({
                 href={`https://wa.me/${whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 px-6 py-3 text-xs font-bold text-emerald-400 transition-all hover:bg-emerald-500/10 hover:border-emerald-500/40"
+                style={{ 
+                  backgroundColor: 'var(--accent-whatsapp-soft, rgba(16, 185, 129, 0.05))',
+                  borderColor: 'var(--accent-whatsapp-border, rgba(16, 185, 129, 0.2))',
+                  color: 'var(--accent-whatsapp, #10b981)'
+                }}
+                className="group flex items-center gap-3 rounded-2xl border px-6 py-3 text-xs font-bold transition-all hover:brightness-110"
               >
                 <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
                 {whatsappLabel}

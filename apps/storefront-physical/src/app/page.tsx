@@ -12,9 +12,11 @@ import {
   useToast,
 } from "@raketech/ui";
 import { PhysicalHero } from "@/components/PhysicalHero";
+import { PhysicalProductModal } from "@/components/PhysicalProductModal";
 import { useRouter } from "next/navigation";
 import { NAV_LINKS, mapPhysicalFirestoreProduct } from "@/lib/products";
 import { Rocket } from "lucide-react";
+import Image from "next/image";
 
 import type {
   ProductDetail,
@@ -28,6 +30,8 @@ export default function PhysicalStorefrontPage() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [physicalProducts, setPhysicalProducts] = useState<ProductDetail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<ProductDetail | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cart = useCart();
   const toast = useToast();
 
@@ -70,6 +74,11 @@ export default function PhysicalStorefrontPage() {
     });
   };
 
+  const handleViewDetail = (product: StorefrontGridProduct) => {
+    setSelectedProduct(product as ProductDetail);
+    setIsModalOpen(true);
+  };
+
   if (isLoading) {
     return (
       <StorefrontThemeLoadingShell
@@ -87,7 +96,7 @@ export default function PhysicalStorefrontPage() {
         onRemove={cart.removeItem}
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
-        whatsappNumber="1234567890"
+        whatsappNumber="584227180378"
         storeName="Raketech"
       />
 
@@ -98,8 +107,19 @@ export default function PhysicalStorefrontPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
-          brandName="Raketech"
-          brandMark={<Rocket className="h-6 w-6 text-[var(--accent-primary)]" />}
+          welcomeMessage={{
+            title: "Raketech",
+            subtitle: "Studio 3D Print"
+          }}
+          brandMark={
+            <Image 
+              src="/images/raketech_logo.png" 
+              alt="Raketech Logo" 
+              width={44}
+              height={44}
+              className="object-contain rounded-xl"
+            />
+          }
         />
 
         <PhysicalHero />
@@ -114,7 +134,7 @@ export default function PhysicalStorefrontPage() {
                   subtitle="Lo más exclusivo de nuestro taller y catálogo gamer"
                   products={featuredProducts}
                   onAddToCart={handleAdd}
-                  onViewDetail={(p) => router.push(`/product/${p.id}`)}
+                  onViewDetail={handleViewDetail}
                 />
               </section>
             )}
@@ -125,16 +145,26 @@ export default function PhysicalStorefrontPage() {
                 subtitle="Explora nuestra colección completa de piezas 3D y soluciones gaming"
                 products={regularProducts}
                 onAddToCart={handleAdd}
-                onViewDetail={(p) => router.push(`/product/${p.id}`)}
+                onViewDetail={handleViewDetail}
               />
             </section>
           </div>
         </div>
 
         <StorefrontFooter
-          storeName="Raketech 3D"
+          storeName="Raketech"
+          subtitle="Studio 3D Print"
           description="Accesorios impresos en 3D para consolas y escritorios, con materiales elegidos para durar y un acabado que se siente premium."
-          whatsappNumber="1234567890"
+          whatsappNumber="584227180378"
+          brandMark={
+            <Image 
+              src="/images/raketech_logo.png" 
+              alt="Raketech Logo" 
+              width={56}
+              height={56}
+              className="object-contain rounded-xl"
+            />
+          }
           columns={[
             {
               title: "Piezas",
@@ -155,6 +185,16 @@ export default function PhysicalStorefrontPage() {
           ]}
         />
       </main>
+
+      <PhysicalProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        product={selectedProduct}
+        onAddToCart={(p, q) => {
+          handleAdd(p, q);
+          setIsModalOpen(false);
+        }}
+      />
 
       <ToastList toasts={toast.toasts} onDismiss={toast.dismissToast} />
     </>

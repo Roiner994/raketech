@@ -2,8 +2,8 @@ import type { ProductDetail, StorefrontNavLink } from "@raketech/ui";
 
 export const NAV_LINKS: StorefrontNavLink[] = [
   { label: "Destacados", href: "/#featured" },
-  { label: "Productos", href: "/#products" },
-  { label: "Materiales", href: "/#products" },
+  { label: "Productos", href: "/#catalog" },
+  { label: "Materiales", href: "/#footer" },
   { label: "Soporte", href: "/#footer" },
 ];
 

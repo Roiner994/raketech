@@ -44,7 +44,7 @@ export function StorefrontHeader({
             href={brandHref}
             className="group flex items-center gap-3 transition-transform active:scale-95"
           >
-            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[15px] bg-[var(--brand-mark-bg)] shadow-lg transition-all duration-300 group-hover:rotate-3 group-hover:scale-105">
+            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden transition-all duration-300 group-hover:rotate-3 group-hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary)]/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
               <span className="relative flex items-center justify-center text-xl font-black italic tracking-tighter text-[var(--text-primary)]">
                 {brandMark || <Search className="h-5 w-5 rotate-180 scale-x-[-1] transform text-[var(--accent-primary)]" style={{ filter: 'drop-shadow(0 0 8px var(--accent-primary))' }} />}
@@ -78,7 +78,7 @@ export function StorefrontHeader({
         <nav className="hidden items-center gap-10 lg:flex">
           {links.map((link) => (
             <a
-              key={link.href}
+              key={`${link.label}-${link.href}`}
               href={link.href}
               className="group relative text-[13px] font-black uppercase tracking-widest text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
             >
@@ -99,12 +99,12 @@ export function StorefrontHeader({
           <button
             onClick={onCartClick}
             aria-label={`Abrir carrito con ${cartCount} items`}
-            className="group relative flex h-11 items-center gap-3 overflow-hidden rounded-[20px] bg-[var(--bg-primary)] border border-[var(--border-strong)] px-5 font-black text-white shadow-2xl transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] active:scale-95"
+            className="group relative flex h-11 items-center gap-3 overflow-hidden rounded-[20px] bg-[var(--accent-primary)] border border-[var(--accent-primary)] px-5 font-black text-white shadow-2xl transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110 active:scale-95 cursor-pointer"
           >
             <div className="relative">
               <ShoppingCart className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               {cartCount > 0 && (
-                <span className="absolute -right-3 -top-2.5 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-[var(--accent-primary)] border-2 border-[var(--bg-primary)] px-1 text-[9px] font-black text-white group-hover:border-[var(--accent-primary)] group-hover:bg-white group-hover:text-[var(--accent-primary)]">
+                <span className="absolute -right-3 -top-2.5 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-[var(--accent-primary)] border-2 border-[var(--text-primary)] px-1 text-[9px] font-black text-white group-hover:border-[var(--accent-primary)] group-hover:bg-white group-hover:text-[var(--accent-primary)]">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
@@ -127,7 +127,7 @@ export function StorefrontHeader({
           <nav className="flex flex-col gap-2">
             {links.map((link) => (
               <a
-                key={link.href}
+                key={`${link.label}-${link.href}`}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className="rounded-xl px-3.5 py-2.5 text-sm font-semibold text-[var(--text-secondary)] transition hover:bg-[var(--surface-glass)] hover:text-[var(--text-primary)]"

@@ -184,7 +184,7 @@ export function CartDrawer({
               group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl py-5 font-bold text-lg transition-all duration-500
               ${items.length === 0
                 ? 'pointer-events-none bg-white/[0.02] text-white/10'
-                : 'bg-emerald-500 text-white hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:translate-y-0'}
+                : 'bg-[var(--accent-whatsapp)] text-white hover:brightness-110 hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:-translate-y-0.5 active:translate-y-0'}
             `}
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

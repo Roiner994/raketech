@@ -3,9 +3,13 @@ import "./globals.css";
 import { getStorefrontTheme } from "@/lib/storefrontTheme";
 
 export const metadata: Metadata = {
-  title: "Raketech Digital — Suscripciones al Mejor Precio",
+  title: "Raketech — Suscripciones al Mejor Precio",
   description:
     "Tu tienda de suscripciones digitales premium: Xbox Game Pass, PlayStation Plus, PC Game Pass y más con entregas inmediatas.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/logo-digital.png",
+  },
 };
 
 export const dynamic = "force-dynamic";

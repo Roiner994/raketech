@@ -3,9 +3,12 @@ import "./globals.css";
 import { getStorefrontTheme } from "@/lib/storefrontTheme";
 
 export const metadata: Metadata = {
-  title: "Raketech 3D — Bases e Impresiones en 3D Premium",
+  title: "Raketech 3D — Studio 3D Print",
   description:
-    "Accesorios y soportes impresos en 3D de alta calidad: bases PS5, soportes auriculares, y más. Materiales premium, diseños exclusivos.",
+    "Accesorios y soportes impresos en 3D de alta calidad. Materiales premium, diseños exclusivos y acabados excepcionales.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export const dynamic = "force-dynamic";

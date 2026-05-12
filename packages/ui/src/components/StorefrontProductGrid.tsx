@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { ArrowRight, Plus, Eye } from 'lucide-react';
+import { ArrowRight, Plus, Eye, ShoppingCart } from 'lucide-react';
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -54,29 +54,24 @@ export function StorefrontProductGrid({
   onViewDetail,
 }: StorefrontProductGridProps) {
   return (
-    <section className="space-y-4">
-      {/* Section header */}
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-bold text-[var(--text-primary)] leading-tight">{title}</h2>
-          {subtitle && (
-            <p className="mt-0.5 text-xs text-[var(--text-muted,#64748B)]">{subtitle}</p>
-          )}
+    <section className="space-y-8">
+      {/* Section header inspired by digital */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <div className="h-[2px] w-6 bg-[var(--accent-primary)] rounded-full" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--accent-primary)]">
+            {title}
+          </span>
         </div>
-
-        {viewAllHref && (
-          <a
-            href={viewAllHref}
-            className="flex shrink-0 items-center gap-1 text-xs font-semibold text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
-          >
-            {viewAllLabel}
-            <ArrowRight className="h-3 w-3" />
-          </a>
+        {subtitle && (
+          <p className="text-xs font-medium text-[var(--text-muted)] max-w-2xl">
+            {subtitle}
+          </p>
         )}
       </div>
 
       {/* Product cards grid */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <ProductGridCard
             key={product.id}
@@ -105,14 +100,17 @@ function ProductGridCard({
 
   return (
     <article
-      className="group relative flex flex-col overflow-hidden rounded-[24px] bg-gradient-to-br from-[var(--surface-card)] to-[var(--surface-card-alt)] transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[var(--accent-primary)]/10 border border-[var(--border-subtle)]"
+      className={`group relative flex flex-col overflow-hidden rounded-[32px] border bg-[var(--bg-card)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-strong)] ${
+        featured 
+          ? 'border-[var(--accent-primary)]/40 shadow-[0_0_20px_var(--accent-primary)]/10' 
+          : 'border-[var(--border-subtle)] shadow-[var(--shadow-soft)]'
+      }`}
     >
-      {/* Thumbnail */}
       <div
         onClick={onView}
         className={[
-          'relative aspect-square w-full overflow-hidden cursor-pointer',
-          imageBg ?? 'bg-[var(--surface-muted)]',
+          'relative aspect-[4/3] w-full overflow-hidden cursor-pointer',
+          imageBg ?? 'bg-[var(--bg-secondary)]',
         ].join(' ')}
         role="button"
         tabIndex={0}
@@ -122,8 +120,8 @@ function ProductGridCard({
             src={image}
             alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-1000 group-hover:scale-110"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-[var(--text-muted)]">
@@ -132,33 +130,31 @@ function ProductGridCard({
         )}
         
         {/* Modern Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-card)] via-transparent to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-transparent to-transparent opacity-40 transition-opacity duration-500 group-hover:opacity-20" />
 
-        {/* Hover hint */}
-        {onView && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="flex translate-y-2 items-center gap-1.5 rounded-full bg-[var(--bg-card)] px-3 py-1.5 text-[10px] font-black text-[var(--text-primary)] opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 uppercase tracking-widest">
-              <Eye className="h-3 w-3" />
-              Detalle
-            </span>
-          </div>
-        )}
+        {/* Hover hint Overlay */}
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px]">
+           <div className="h-10 w-10 flex items-center justify-center rounded-full bg-[var(--bg-card)]/80 text-[var(--text-primary)] shadow-lg transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
+              <Eye className="h-5 w-5" />
+           </div>
+        </div>
       </div>
 
       {/* Info Section */}
-      <div className="flex flex-1 flex-col p-5 pt-2">
-        <div className="mb-4 space-y-1">
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-5 space-y-2">
           <button
             onClick={onView}
-            className="text-left text-base font-black tracking-tight text-[var(--text-primary)] line-clamp-1 transition-colors hover:text-[var(--accent-primary)]"
+            className="text-left text-sm sm:text-base font-black tracking-tight text-[var(--text-primary)] line-clamp-1 transition-colors hover:text-[var(--accent-primary)]"
           >
             {name}
           </button>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-black text-[var(--text-primary)]">
+          
+          <div className="flex items-baseline gap-1.5 pt-1">
+            <span className="text-xl sm:text-2xl font-black text-[var(--text-primary)] tracking-tighter">
               ${price % 1 === 0 ? price : price.toFixed(2)}
             </span>
-            <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
+            <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">
               USD
             </span>
           </div>
@@ -169,10 +165,13 @@ function ProductGridCard({
             e.stopPropagation();
             onAdd();
           }}
-          className="mt-auto relative flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[var(--bg-primary)] border border-[var(--border-strong)] text-xs font-black text-white transition-all duration-300 hover:bg-[var(--accent-primary)] hover:border-[var(--accent-primary)] group/btn active:scale-95 shadow-lg"
+          className="mt-auto relative flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-[var(--accent-primary)] border border-[var(--accent-primary)] text-[11px] font-black uppercase tracking-widest text-white transition-all duration-300 hover:brightness-110 group/btn active:scale-95 shadow-md cursor-pointer"
         >
-          <Plus className="h-3.5 w-3.5 transition-transform group-hover/btn:rotate-90" />
+          <ShoppingCart className="h-4 w-4 transition-transform group-hover/btn:scale-110" />
           <span>Agregar</span>
+          
+          {/* Subtle reflection effect on hover */}
+          <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
         </button>
       </div>
     </article>

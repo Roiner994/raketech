@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
 import {
   ProductDetailView,
@@ -113,7 +114,7 @@ export default function ProductPage() {
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
         whatsappNumber="584227180378"
-        storeName="Raketech Digital"
+        storeName="Raketech"
       />
 
       <main className="min-h-screen bg-[var(--bg-primary)]">
@@ -122,6 +123,8 @@ export default function ProductPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
+          brandName="Raketech"
+          brandMark={<Image src="/logo-digital.png" alt="Raketech Logo" width={44} height={44} className="object-contain" />}
         />
 
         <div className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
@@ -144,7 +147,9 @@ export default function ProductPage() {
         </div>
 
         <StorefrontFooter
-          storeName="Raketech Digital"
+          storeName="Raketech"
+          subtitle="Suscripciones, recargas y gaming"
+          brandMark={<Image src="/logo-digital.png" alt="Raketech Logo" width={56} height={56} className="object-contain" />}
           description="Suscripciones digitales premium, códigos originales y accesorios para elevar tu setup con entregas rápidas y soporte cercano."
           whatsappNumber="584227180378"
           columns={[

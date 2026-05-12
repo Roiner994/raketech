@@ -6,7 +6,7 @@ export default function SettingsPage() {
       storefronts={[
         {
           id: "digital",
-          name: "Raketech Digital",
+          name: "Raketech",
           previewHref:
             process.env.NEXT_PUBLIC_DIGITAL_STOREFRONT_URL ?? "http://127.0.0.1:3000",
         },

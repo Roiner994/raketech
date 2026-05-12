@@ -4,13 +4,15 @@
 
 :root {
   --bg-primary: #020617;
+  --bg-primary-rgb: 2, 6, 23;
   --bg-secondary: #070b1d;
   --bg-card: #0f172a;
   --bg-elevated: #1e293b;
   --bg-soft: #334155;
-  --accent-primary: #3b82f6;
-  --accent-primary-strong: #2563eb;
-  --accent-primary-hover: #60a5fa;
+  --accent-primary: #60a5fa;
+  --accent-primary-strong: #3b82f6;
+  --accent-primary-hover: #93c5fd;
+  --accent-primary-rgb: 96, 165, 250;
   --accent-success: #10b981;
   --accent-warning: #f59e0b;
   --text-primary: #f8fafc;
@@ -53,8 +55,8 @@
   --text-on-accent: #ffffff;
   --shadow-soft: 0 10px 30px -15px rgba(0, 0, 0, 0.5);
   --shadow-strong: 0 20px 40px -20px rgba(0, 0, 0, 0.8);
-  --accent-whatsapp: #10b981;
-  --accent-whatsapp-hover: #059669;
+  --accent-whatsapp: #60a5fa;
+  --accent-whatsapp-hover: #3b82f6;
   --selection-bg: rgba(59, 130, 246, 0.3);
 
   /* Hero design tokens from digital */
@@ -68,18 +70,20 @@
 
 html[data-theme="light"] {
   --bg-primary: #f4f7fb;
+  --bg-primary-rgb: 244, 247, 251;
   --bg-secondary: #e8eef7;
   --bg-card: #ffffff;
   --bg-elevated: #f8fbff;
   --bg-soft: #d9e5f3;
-  --accent-primary: #2563eb;
-  --accent-primary-strong: #1d4ed8;
-  --accent-primary-hover: #3b82f6;
+  --accent-primary: #2358F3;
+  --accent-primary-strong: #1e3a8a;
+  --accent-primary-hover: #2563eb;
+  --accent-primary-rgb: 23, 88, 243;
   --accent-success: #16a34a;
   --accent-warning: #d97706;
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
+  --text-primary: #020617;
+  --text-secondary: #0f172a;
+  --text-muted: #475569;
   --border-subtle: rgba(15, 23, 42, 0.12);
   --border-strong: rgba(15, 23, 42, 0.2);
   --body-background:
@@ -116,8 +120,8 @@ html[data-theme="light"] {
   --text-on-accent: #ffffff;
   --shadow-soft: 0 20px 50px -32px rgba(37, 99, 235, 0.16);
   --shadow-strong: 0 24px 60px -36px rgba(15, 23, 42, 0.18);
-  --accent-whatsapp: #16a34a;
-  --accent-whatsapp-hover: #15803d;
+  --accent-whatsapp: #3b82f6;
+  --accent-whatsapp-hover: #2563eb;
   --selection-bg: rgba(37, 99, 235, 0.18);
 }
 
@@ -165,17 +169,17 @@ body {
 }
 
 .hero-gradient-title {
-  background: linear-gradient(180deg, #81a4ff 0%, #5f92ff 38%, #3174ff 100%);
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 45%, #1d4ed8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 28px rgba(59, 130, 246, 0.12);
+  text-shadow: 0 0 32px rgba(37, 99, 235, 0.08);
 }
 
 .hero-grid {
   background-image:
-    linear-gradient(rgba(80, 118, 198, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(80, 118, 198, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 78%);
 }
@@ -228,7 +232,7 @@ body {
 }
 
 .hero-scene-frame {
-  border: 1px solid rgba(96, 165, 250, 0.16);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.16);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 30px 60px rgba(1, 8, 24, 0.5);

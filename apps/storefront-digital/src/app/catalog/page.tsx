@@ -12,6 +12,7 @@ import {
   useToast,
 } from "@raketech/ui";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { DIGITAL_PRODUCTS, NAV_LINKS, mapDigitalFirestoreProduct } from "@/lib/products";
 import type { StorefrontGridProduct, ProductDetail } from "@raketech/ui";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -94,7 +95,7 @@ export default function DigitalCatalogPage() {
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
         whatsappNumber="584227180378"
-        storeName="Raketech Digital"
+        storeName="Raketech"
       />
 
       <main className="min-h-screen pt-20">
@@ -103,6 +104,8 @@ export default function DigitalCatalogPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
+          brandName="Raketech"
+          brandMark={<Image src="/logo-digital.png" alt="Raketech Logo" width={44} height={44} className="object-contain" />}
         />
 
         <div className="mx-auto max-w-[1640px] px-4 py-8 sm:px-6 lg:px-8">
@@ -116,7 +119,9 @@ export default function DigitalCatalogPage() {
         </div>
 
         <StorefrontFooter
-          storeName="Raketech Digital"
+          storeName="Raketech"
+          subtitle="Suscripciones, recargas y gaming"
+          brandMark={<Image src="/logo-digital.png" alt="Raketech Logo" width={56} height={56} className="object-contain" />}
           description="Suscripciones digitales premium, códigos originales y accesorios para elevar tu setup con entregas rápidas y soporte cercano."
           whatsappNumber="584227180378"
           columns={[

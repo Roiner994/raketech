@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   CartDrawer,
   StorefrontFooter,
@@ -98,7 +99,7 @@ export default function DigitalStorefrontPage() {
   if (isLoading) {
     return (
       <StorefrontThemeLoadingShell
-        title="Cargando Raketech Digital"
+        title="Cargando Raketech"
       />
     );
   }
@@ -113,7 +114,7 @@ export default function DigitalStorefrontPage() {
         onUpdateQuantity={cart.updateQuantity}
         total={cart.total}
         whatsappNumber="584227180378"
-        storeName="Raketech Digital"
+        storeName="Raketech"
       />
 
 
@@ -123,8 +124,9 @@ export default function DigitalStorefrontPage() {
           cartCount={cart.itemCount}
           cartTotal={cart.total}
           onCartClick={() => setIsCartOpen(true)}
+          brandMark={<Image src="/logo-digital.png" alt="Raketech Logo" width={44} height={44} className="object-contain" />}
           welcomeMessage={{
-            title: "Raketech Digital",
+            title: "Raketech",
             subtitle: "Suscripciones, recargas y gaming"
           }}
         />
@@ -157,7 +159,9 @@ export default function DigitalStorefrontPage() {
         </div>
 
         <StorefrontFooter
-          storeName="Raketech Digital"
+          storeName="Raketech"
+          subtitle="Suscripciones, recargas y gaming"
+          brandMark={<Image src="/logo-digital.png" alt="Raketech Logo" width={56} height={56} className="object-contain" />}
           description="Suscripciones digitales, códigos originales y activaciones para elevar tu setup con una experiencia rápida, confiable y con personalidad propia."
           whatsappNumber="584227180378"
           socialLinks={[

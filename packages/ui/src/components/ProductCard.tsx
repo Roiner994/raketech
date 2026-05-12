@@ -45,18 +45,18 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   return (
     <div
       className={`
-        bg-[#1E293B] rounded-2xl border overflow-hidden flex flex-col
+        bg-[var(--bg-card)] rounded-2xl border overflow-hidden flex flex-col
         transition-all duration-300 group
         hover:shadow-xl hover:-translate-y-1
-        ${isDigital ? 'border-slate-800 hover:border-[#10B981]/40 hover:shadow-[#10B981]/5' : 'border-slate-800 hover:border-slate-600 hover:shadow-black/40'}
+        ${isDigital ? 'border-[var(--border-subtle)] hover:border-[var(--accent-success)]/40 hover:shadow-[var(--accent-success)]/5' : 'border-[var(--border-subtle)] hover:border-[var(--border-strong)] hover:shadow-black/40'}
       `}
     >
       {/* Image / Placeholder */}
       <div
         className={`relative h-48 flex items-center justify-center overflow-hidden ${
           isDigital
-            ? 'bg-gradient-to-br from-[#0B1120] to-slate-900'
-            : 'bg-slate-800'
+            ? 'bg-gradient-to-br from-[var(--surface-card-alt)] to-[var(--bg-primary)]'
+            : 'bg-[var(--surface-muted)]'
         }`}
       >
         {imageUrl ? (
@@ -66,11 +66,11 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-xl border border-slate-700">
+          <div className="w-20 h-20 bg-[var(--surface-interactive)] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-xl border border-[var(--border-subtle)]">
             {isDigital ? (
-              <Gamepad2 className="w-10 h-10 text-[#10B981]" />
+              <Gamepad2 className="w-10 h-10 text-[var(--accent-success)]" />
             ) : (
-              <Printer className="w-10 h-10 text-slate-400" />
+              <Printer className="w-10 h-10 text-[var(--text-muted)]" />
             )}
           </div>
         )}
@@ -104,10 +104,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           ) : null}
         </div>
 
-        <h3 className="text-base font-bold text-white mb-1 leading-snug line-clamp-1">
+        <h3 className="text-base font-bold text-[var(--text-primary)] mb-1 leading-snug line-clamp-1">
           {title}
         </h3>
-        <p className="text-xs text-slate-400 leading-relaxed line-clamp-2 flex-1">
+        <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2 flex-1">
           {description}
         </p>
 
@@ -115,11 +115,11 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <div className="flex items-end justify-between mt-4 pt-4 border-t border-slate-800/60">
           <div>
             {originalPrice && (
-              <p className="text-xs text-slate-500 line-through mb-0.5">
+              <p className="text-xs text-[var(--text-muted)] line-through mb-0.5">
                 ${originalPrice % 1 === 0 ? originalPrice : originalPrice.toFixed(2)}
               </p>
             )}
-            <p className="text-xl font-bold text-white">${price % 1 === 0 ? price : price.toFixed(2)}</p>
+            <p className="text-xl font-bold text-[var(--text-primary)]">${price % 1 === 0 ? price : price.toFixed(2)}</p>
           </div>
           <button
             onClick={() => !isOutOfStock && onAddToCart?.(product)}
@@ -127,12 +127,12 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             className={`
               flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold
               transition-all duration-200 active:scale-95
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1E293B]
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-card)]
               disabled:opacity-40 disabled:pointer-events-none
               ${
                 isDigital
-                  ? 'bg-[#10B981]/10 hover:bg-[#10B981] text-[#10B981] hover:text-white border border-[#10B981]/20 focus-visible:ring-[#10B981]'
-                  : 'bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 focus-visible:ring-slate-400'
+                  ? 'bg-[var(--accent-success)]/10 hover:bg-[var(--accent-success)] text-[var(--accent-success)] hover:text-white border border-[var(--accent-success)]/20 focus-visible:ring-[var(--accent-success)]'
+                  : 'bg-[var(--text-primary)] hover:bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:text-white border border-[var(--text-primary)] hover:border-[var(--accent-primary)] focus-visible:ring-[var(--accent-primary)]'
               }
             `}
           >
