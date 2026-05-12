@@ -24,6 +24,8 @@ export interface StorefrontGridProduct {
   featured?: boolean;
   /** Background colour token for the image area — defaults to dark panel */
   imageBg?: string;
+  /** Optional description for the product card */
+  description?: string;
 }
 
 export interface StorefrontProductGridProps {

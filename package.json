@@ -10,7 +10,7 @@
     "dev:digital": "npm run dev --workspace=apps/storefront-digital",
     "dev:physical": "npm run dev --workspace=apps/storefront-physical",
     "dev:admin": "npm run dev --workspace=apps/admin",
-    "build:all": "npm run build --workspace=packages/ui && npm run build --workspaces --if-present --ignore packages/ui",
+    "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present"
   },
   "dependencies": {
