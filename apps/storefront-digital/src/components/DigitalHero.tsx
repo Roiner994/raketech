@@ -81,7 +81,7 @@ export function DigitalHero() {
             alt="Consola, headset, controles y accesorios gaming en una plataforma iluminada"
             fill
             priority
-            sizes="100vw"
+            sizes="(min-width: 1024px) 100vw, 1px"
             className="hidden object-cover object-[68%_center] lg:block"
           />
           <Image
@@ -89,7 +89,7 @@ export function DigitalHero() {
             alt="Consola, headset, controles y accesorios gaming en una plataforma iluminada"
             fill
             priority
-            sizes="100vw"
+            sizes="(max-width: 1023px) 100vw, 1px"
             className="object-contain object-bottom lg:hidden"
           />
         </div>

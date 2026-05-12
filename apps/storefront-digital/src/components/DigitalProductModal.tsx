@@ -132,6 +132,7 @@ export function DigitalProductModal({
                     src={gallery[activeImageIndex]}
                     alt={product.imageAlt || product.name}
                     fill
+                    sizes="(max-width: 639px) 100vw, 400px"
                     className={`transition-all duration-700 ease-out ${isZoomed ? 'object-contain scale-125' : 'object-contain p-4'}`}
                     priority
                   />
@@ -181,7 +182,7 @@ export function DigitalProductModal({
                         : 'border-white/5 opacity-40 hover:opacity-100'
                     }`}
                   >
-                    <Image src={img} alt={`Thumb ${idx}`} fill className="object-cover" />
+                    <Image src={img} alt={`Thumb ${idx}`} fill sizes="48px" className="object-cover" />
                   </button>
                 ))}
               </div>

@@ -78,7 +78,7 @@ function DigitalProductCard({
             src={image}
             alt={imageAlt}
             fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 50vw, 25vw"
+            sizes="(max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
             className="object-cover transition-transform duration-1000 group-hover:scale-110"
           />
         )}

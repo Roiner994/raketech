@@ -36,7 +36,7 @@ export function PhysicalHero() {
               alt="Colección de productos 3D Raketech"
               fill
               priority
-              sizes="100vw"
+              sizes="(max-width: 1023px) 100vw, 1px"
               className="object-contain object-[center_120px] min-[420px]:object-[center_90px]"
             />
           </div>
@@ -50,7 +50,7 @@ export function PhysicalHero() {
               alt="Colección de productos 3D Raketech"
               fill
               priority
-              sizes="(max-width: 1439px) 58vw, 56vw"
+              sizes="(max-width: 1023px) 1px, (max-width: 1439px) 58vw, 56vw"
               className="object-cover object-[72%_center] xl:object-right"
             />
           </div>

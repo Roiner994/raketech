@@ -130,6 +130,7 @@ export function PhysicalProductModal({
                     src={gallery[activeImageIndex]}
                     alt={product.imageAlt || product.name}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px"
                     className={`transition-all duration-700 ease-out ${isZoomed ? 'object-contain scale-125' : 'object-contain p-8 sm:p-12'}`}
                     priority
                   />
@@ -179,7 +180,13 @@ export function PhysicalProductModal({
                         : 'border-transparent opacity-50 hover:opacity-100'
                     }`}
                   >
-                    <Image src={img} alt={`Thumb ${idx}`} fill className="object-cover" />
+                    <Image 
+                      src={img} 
+                      alt={`Thumb ${idx}`} 
+                      fill 
+                      sizes="56px"
+                      className="object-cover" 
+                    />
                   </button>
                 ))}
               </div>
