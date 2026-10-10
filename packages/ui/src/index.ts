@@ -73,3 +73,10 @@ export {
   resolveStorefrontTheme,
 } from './lib/storefrontTheme';
 export type { StorefrontId, StorefrontTheme } from './lib/storefrontTheme';
+
+// ─── Product images ──────────────────────────────────────────────────────────
+export {
+  isUnusableProductImageUrl,
+  resolveProductGallery,
+  resolveProductImageUrl,
+} from './lib/productImageUrl';

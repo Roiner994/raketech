@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1149.0",
     "@raketech/ui": "*",
     "@tailwindcss/typography": "^0.5.19",
     "firebase": "^12.12.1",

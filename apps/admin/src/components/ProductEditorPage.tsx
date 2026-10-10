@@ -10,7 +10,30 @@ import {
 } from '@raketech/ui';
 import type { ProductFormValues, ProductFormType, TableProduct } from '@raketech/ui';
 import { setFlashToast } from '@/lib/flashToast';
-import { db, storage } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+
+async function uploadProductImage(file: File): Promise<string> {
+  const token = await auth.currentUser?.getIdToken();
+  if (!token) {
+    throw new Error('Debes iniciar sesión para subir imágenes');
+  }
+
+  const body = new FormData();
+  body.set('file', file);
+
+  const response = await fetch('/api/uploads/product-image', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body,
+  });
+
+  const data = (await response.json()) as { url?: string; error?: string };
+  if (!response.ok || !data.url) {
+    throw new Error(data.error || 'Upload failed');
+  }
+
+  return data.url;
+}
 
 type ProductTypeSlug = 'digital' | 'physical';
 
@@ -213,7 +236,7 @@ export function ProductEditorPage({ productType, productId }: ProductEditorPageP
         layout="page"
         onClose={() => router.push(backHref(productType))}
         onSave={handleSave}
-        storage={storage}
+        uploadImage={uploadProductImage}
         title={productId ? (productType === 'digital' ? 'Editar Producto Digital' : 'Editar Producto Físico') : (productType === 'digital' ? 'Nuevo Producto Digital' : 'Nuevo Producto Físico')}
         fixedType={slugToFixedType(productType)}
         initialValues={initialValues}

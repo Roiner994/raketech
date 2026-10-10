@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Search, Edit, Trash2, Gamepad2, Printer, ChevronUp, ChevronDown, Star } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Search, Edit, Trash2, Gamepad2, Printer, ChevronUp, ChevronDown, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Badge } from './ui/Badge';
 
 export interface TableProduct {
@@ -29,6 +30,7 @@ interface DataTableProps {
 
 type SortKey = 'title' | 'price' | 'stock';
 type SortDir = 'asc' | 'desc';
+const PAGE_SIZE = 10;
 
 function SortIcon({ activeKey, activeDirection, col }: { activeKey: SortKey; activeDirection: SortDir; col: SortKey }) {
   if (activeKey !== col) {
@@ -41,16 +43,25 @@ function SortIcon({ activeKey, activeDirection, col }: { activeKey: SortKey; act
 }
 
 export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: DataTableProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('title');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
   const toggleSort = (key: SortKey) => {
+    updatePage(1);
     if (sortKey === key) setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
     else { setSortKey(key); setSortDir('asc'); }
   };
 
-  const filtered = products
+  const requestedPage = useMemo(() => {
+    const rawPage = Number(searchParams?.get('p') ?? searchParams?.get('page') ?? '1');
+    return Number.isFinite(rawPage) && rawPage > 0 ? Math.floor(rawPage) : 1;
+  }, [searchParams]);
+
+  const filtered = useMemo(() => products
     .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
       let aVal: string | number = a[sortKey] ?? '';
@@ -58,7 +69,26 @@ export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: Data
       if (sortKey === 'stock') { aVal = a.stock ?? Infinity; bVal = b.stock ?? Infinity; }
       const dir = sortDir === 'asc' ? 1 : -1;
       return aVal < bVal ? -dir : aVal > bVal ? dir : 0;
-    });
+    }), [products, search, sortKey, sortDir]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safeCurrentPage = Math.min(requestedPage, totalPages);
+  const startIndex = (safeCurrentPage - 1) * PAGE_SIZE;
+  const visibleProducts = filtered.slice(startIndex, startIndex + PAGE_SIZE);
+  const showingStart = filtered.length === 0 ? 0 : startIndex + 1;
+  const showingEnd = Math.min(startIndex + PAGE_SIZE, filtered.length);
+
+  const updatePage = (page: number) => {
+    const nextPage = Math.max(1, Math.min(totalPages, page));
+    const nextParams = new URLSearchParams(searchParams?.toString());
+    nextParams.delete('page');
+
+    if (nextPage <= 1) nextParams.delete('p');
+    else nextParams.set('p', String(nextPage));
+
+    const nextQuery = nextParams.toString();
+    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
+  };
 
   return (
     <div className="bg-[#1E293B] border border-slate-800 rounded-2xl overflow-hidden">
@@ -70,7 +100,10 @@ export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: Data
             type="text"
             placeholder="Buscar productos..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              updatePage(1);
+            }}
             className="w-full bg-[#0B1120] border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-[#3B82F6] transition-colors"
           />
         </div>
@@ -114,7 +147,7 @@ export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: Data
                 </td>
               </tr>
             ) : (
-              filtered.map((product) => (
+              visibleProducts.map((product) => (
                 <tr
                   key={product.id}
                   className="hover:bg-slate-800/30 transition-colors group"
@@ -197,9 +230,35 @@ export function DataTable({ products, onEdit, onDelete, onToggleFeatured }: Data
 
       {/* Footer row */}
       {filtered.length > 0 && (
-        <div className="px-6 py-3 border-t border-slate-800 text-xs text-slate-500 flex items-center justify-between">
-          <span>{filtered.length} {filtered.length === 1 ? 'producto' : 'productos'}</span>
-          {search && <span>Filtrado de {products.length} total</span>}
+        <div className="flex flex-col gap-4 border-t border-slate-800 px-6 py-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm text-slate-400">
+            Mostrando <span className="font-semibold text-slate-200">{showingStart}</span> a{' '}
+            <span className="font-semibold text-slate-200">{showingEnd}</span> de{' '}
+            <span className="font-semibold text-slate-200">{filtered.length}</span> resultados
+          </div>
+          <div className="flex items-center justify-between rounded-xl border border-slate-800 bg-[#111827] sm:justify-end">
+            <button
+              type="button"
+              onClick={() => updatePage(safeCurrentPage - 1)}
+              disabled={safeCurrentPage === 1}
+              className="flex h-11 w-11 items-center justify-center border-r border-slate-800 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:text-slate-700"
+              aria-label="Página anterior"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div className="min-w-[11rem] px-4 text-center text-sm font-semibold text-slate-200">
+              Página {safeCurrentPage} de {totalPages}
+            </div>
+            <button
+              type="button"
+              onClick={() => updatePage(safeCurrentPage + 1)}
+              disabled={safeCurrentPage === totalPages}
+              className="flex h-11 w-11 items-center justify-center border-l border-slate-800 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:text-slate-700"
+              aria-label="Página siguiente"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       )}
     </div>

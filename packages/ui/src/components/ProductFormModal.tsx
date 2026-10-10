@@ -7,9 +7,6 @@ import { Select } from './ui/Select';
 import { Toggle } from './ui/Toggle';
 import { Button } from './ui/Button';
 import { RichTextEditor } from './ui/RichTextEditor';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import type { FirebaseStorage } from 'firebase/storage';
-
 export type ProductFormType = 'Digital' | 'Físico';
 
 export interface ProductFormValues {
@@ -31,7 +28,7 @@ interface ProductFormModalProps {
   isOpen?: boolean;
   onClose: () => void;
   onSave: (values: ProductFormValues) => void | Promise<void>;
-  storage: FirebaseStorage;
+  uploadImage: (file: File) => Promise<string>;
   initialValues?: Partial<ProductFormValues>;
   title?: string;
   fixedType?: ProductFormType;
@@ -121,23 +118,6 @@ function createSavedImages(gallery: string[]) {
     kind: 'saved' as const,
     url,
   }));
-}
-
-function uploadFile(file: File, storage: FirebaseStorage) {
-  const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-  const uploadTask = uploadBytesResumable(storageRef, file);
-
-  return new Promise<string>((resolve, reject) => {
-    uploadTask.on(
-      'state_changed',
-      undefined,
-      reject,
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        resolve(downloadURL);
-      }
-    );
-  });
 }
 
 async function loadImageElement(file: File) {
@@ -233,7 +213,7 @@ export function ProductFormModal({
   isOpen,
   onClose,
   onSave,
-  storage,
+  uploadImage,
   initialValues,
   title = 'Agregar Producto',
   fixedType,
@@ -374,7 +354,7 @@ export function ProductFormModal({
         }
 
         const optimizedFile = await optimizeImage(image.file);
-      const uploadedUrl = await uploadFile(optimizedFile, storage);
+        const uploadedUrl = await uploadImage(optimizedFile);
         uploadedUrlsById.set(image.id, uploadedUrl);
 
         completedUploads += 1;

@@ -1,4 +1,8 @@
-import type { ProductDetail, StorefrontNavLink } from "@raketech/ui";
+import {
+  resolveProductGallery,
+  type ProductDetail,
+  type StorefrontNavLink,
+} from "@raketech/ui";
 
 export const NAV_LINKS: StorefrontNavLink[] = [
   { label: "Suscripciones Digitales", href: "/#subscriptions" },
@@ -83,13 +87,13 @@ export function mapDigitalFirestoreProduct(
   const imageUrl = typeof data.imageUrl === "string" && data.imageUrl.length > 0
     ? data.imageUrl
     : "";
-  const normalizedGallery = gallery.length > 0 ? gallery : imageUrl ? [imageUrl] : [];
+  const normalizedGallery = resolveProductGallery(gallery, imageUrl);
 
   return {
     id,
     name: typeof data.title === "string" ? data.title : "",
     price: typeof data.price === "number" ? data.price : 0,
-    image: imageUrl || "/images/placeholder.png",
+    image: normalizedGallery[0],
     imageAlt: typeof data.title === "string" ? data.title : "Producto",
     imageBg: "bg-[var(--surface-muted)]",
     featured: data.featured === true,
